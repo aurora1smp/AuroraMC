@@ -199,6 +199,40 @@ nav a{flex:none;font-size:9px;padding:12px 10px}
 #auromaps .cmp-cap{max-width:640px;margin:14px auto 0;text-align:center;font-size:13px;color:var(--mut)}
 #auromaps .am-foot{margin:0;padding:26px 0 34px;text-align:center;font-size:13px;color:#e3eaf5;border-top:4px solid var(--grass2)}
 #auromaps .am-foot a{color:var(--aur)}
+
+/* ===== Endereço do pedido: campos separados e obrigatórios ===== */
+#auromaps .addr{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:14px 12px}
+#auromaps .addr .f{min-width:0}
+#auromaps .addr .f-rua{grid-column:span 4}
+#auromaps .addr .f-num{grid-column:span 2}
+#auromaps .addr .f-bai,#auromaps .addr .f-cid,#auromaps .addr .f-est,#auromaps .addr .f-pai{grid-column:span 3}
+#auromaps .addr label{margin:0 0 8px;font-size:9px}
+#auromaps .addr input.inv{border-color:#ff6b6b}
+#auromaps .addr input.inv:focus{border-color:var(--aur)}
+@media (max-width:560px){#auromaps .addr .f{grid-column:1/-1}}
+
+/* ===== Popup do Auromaps na página inicial (some sozinho em 10 s) ===== */
+#promo{position:fixed;inset:0;z-index:40;display:none;align-items:center;justify-content:center;padding:calc(20px + env(safe-area-inset-top,0px)) 20px calc(20px + env(safe-area-inset-bottom,0px));background:rgba(24,6,36,.66);text-shadow:none;animation:pfade .25s ease-out}
+#promo.on{display:flex}
+#promo .pc{position:relative;width:min(100%,440px);background:#2b0d3f;color:#fff6e5;border:4px solid #000;box-shadow:0 0 0 4px #ff3d81,10px 10px 0 4px #000;animation:ppop .5s steps(6) both}
+#promo .pl{display:block;color:inherit;text-decoration:none}
+#promo .ph{display:flex;align-items:center;gap:14px;padding:16px 18px;background:#ff8a1f;border-bottom:4px solid #000}
+#promo .pm{flex:none;width:64px;height:64px;border:4px solid #000;display:block}
+#promo .pt{font-size:clamp(12px,3.6vw,15px);line-height:1.55;color:#2b0d3f}
+#promo .pb{padding:18px 18px 0}
+#promo .pb p{margin:0 0 10px;font-size:15px;line-height:1.55}
+#promo .pb p b{color:#ffd23f}
+#promo .pcta{display:block;margin:6px 18px 0;padding:14px 12px;text-align:center;font-family:"Press Start 2P",ui-monospace,monospace;font-size:11px;color:#2b0d3f;background:#ffd23f;border:4px solid #000;box-shadow:inset -4px -4px 0 #d9a400,inset 4px 4px 0 #fff0a0}
+#promo .pl:hover .pcta,#promo .pl:focus-visible .pcta{filter:brightness(1.08)}
+#promo .pl:focus-visible{outline:3px solid #ffd23f;outline-offset:-6px}
+#promo .pclose{position:absolute;top:-18px;right:-14px;z-index:2;width:40px;height:40px;padding:0;border:4px solid #000;background:#ff3d81;color:#fff;font:700 22px/1 system-ui,sans-serif;cursor:pointer}
+#promo .pclose:hover{filter:brightness(1.1)}
+#promo .pbar{display:flex;gap:4px;padding:16px 18px 18px}
+#promo .pbar i{flex:1;height:12px;background:#ffd23f;border:2px solid #000;animation:poff .12s steps(1) forwards;animation-delay:calc((10 - var(--i)) * 1s)}
+@keyframes poff{to{background:#4a2468}}
+@keyframes ppop{from{transform:scale(.55);opacity:0}to{transform:scale(1);opacity:1}}
+@keyframes pfade{from{opacity:0}to{opacity:1}}
+@media (prefers-reduced-motion:reduce){#promo,#promo .pc{animation:none}}
 </style>
 </head>
 <body>
@@ -440,8 +474,15 @@ nav a{flex:none;font-size:9px;padding:12px 10px}
 <form id="form" novalidate>
 <div id="step1">
 
-<label for="end" style="margin-top:0">1. ENDEREÇO COMPLETO<small>O endereço será o centro do mapa e também o seu spawn.</small></label>
-<input id="end" name="endereco" type="text" maxlength="250" autocomplete="street-address" placeholder="Rua, número, bairro, cidade, estado, país" required>
+<label style="margin-top:0">1. ENDEREÇO COMPLETO<small>Todos os campos são obrigatórios. O endereço será o centro do mapa e também o seu spawn.</small></label>
+<div class="addr" id="addr">
+<div class="f f-rua"><label for="end-rua">RUA</label><input id="end-rua" name="rua" type="text" maxlength="120" autocomplete="address-line1" placeholder="Av. Paulista" required></div>
+<div class="f f-num"><label for="end-num">NÚMERO</label><input id="end-num" name="numero" type="text" maxlength="12" autocomplete="off" placeholder="1578" required></div>
+<div class="f f-bai"><label for="end-bai">BAIRRO</label><input id="end-bai" name="bairro" type="text" maxlength="80" autocomplete="address-level3" placeholder="Bela Vista" required></div>
+<div class="f f-cid"><label for="end-cid">CIDADE</label><input id="end-cid" name="cidade" type="text" maxlength="80" autocomplete="address-level2" placeholder="São Paulo" required></div>
+<div class="f f-est"><label for="end-est">ESTADO</label><input id="end-est" name="estado" type="text" maxlength="40" autocomplete="address-level1" placeholder="SP" required></div>
+<div class="f f-pai"><label for="end-pai">PAÍS</label><input id="end-pai" name="pais" type="text" maxlength="60" autocomplete="country-name" value="Brasil" required></div>
+</div>
 <p class="coord-help">Quanto mais completo, melhor. Ex.: Av. Paulista, 1578, Bela Vista, São Paulo, SP, Brasil</p>
 
 <label>2. TAMANHO DA ÁREA<small>Um quadrado ao redor do endereço, que fica exatamente no centro.</small></label>
@@ -540,6 +581,17 @@ nav a{flex:none;font-size:9px;padding:12px 10px}
 <p>NÃO É UM PRODUTO OFICIAL DO MINECRAFT. NÃO APROVADO OU ASSOCIADO À MOJANG OU MICROSOFT.</p>
 </footer>
 <div id="toast">IP COPIADO!</div>
+<div id="promo" role="dialog" aria-labelledby="promo-t">
+<div class="pc">
+<button type="button" class="pclose" aria-label="Fechar aviso">×</button>
+<a class="pl" href="#am-precos">
+<div class="ph"><svg class="pm" viewBox="0 0 40 40" shape-rendering="crispEdges" aria-hidden="true"><rect width="40" height="40" fill="#5cb338"/><rect y="28" width="12" height="8" fill="#3a8bd6"/><rect x="12" y="22" width="12" height="8" fill="#3a8bd6"/><rect x="24" y="16" width="16" height="8" fill="#3a8bd6"/><rect x="4" y="4" width="10" height="8" fill="#fff6e5"/><rect x="4" y="4" width="10" height="3" fill="#ff8a1f"/><rect x="17" y="6" width="8" height="8" fill="#ff3d81" stroke="#000" stroke-width="2"/><rect x="19" y="14" width="4" height="4" fill="#ff3d81" stroke="#000" stroke-width="1"/><rect x="20" y="8" width="2" height="2" fill="#fff"/></svg><strong class="px pt" id="promo-t">Jogue na sua própria rua!</strong></div>
+<div class="pb"><p>O <b>Auromaps</b> cria o mapa de Minecraft de qualquer lugar do mundo: sua casa, seu bairro ou sua cidade. Você nasce exatamente no endereço que escolher.</p><p>Mapas a partir de <b>R$ 4,99</b>.</p></div>
+<span class="pcta">VER OS VALORES</span>
+</a>
+<div class="pbar" aria-hidden="true"><i style="--i:0"></i><i style="--i:1"></i><i style="--i:2"></i><i style="--i:3"></i><i style="--i:4"></i><i style="--i:5"></i><i style="--i:6"></i><i style="--i:7"></i><i style="--i:8"></i><i style="--i:9"></i></div>
+</div>
+</div>
 <script>
 function copyIP(i){
   var t=["aurorabr.jogar.co:10148","enx-cirion-89.enx.host:10148"][i||0],el=document.getElementById("toast");
@@ -645,11 +697,20 @@ mostrarExemplo("quadras");
 
 /* ---------- pedido ---------- */
 $("nasc").max = new Date().toISOString().slice(0,10);
+$("addr").addEventListener("input", e => e.target.classList.remove("inv"));
 let current = null;
 $("form").addEventListener("submit", async e => {
   e.preventDefault();
-  const endereco = $("end").value.trim();
-  if (endereco.length < 8 || !/\d/.test(endereco) && endereco.split(/[\s,]+/).length < 3) return msg("Digite o endereço completo (rua, número, cidade, estado e país).","err");
+  const campos = [["end-rua","rua"],["end-num","número"],["end-bai","bairro"],["end-cid","cidade"],["end-est","estado"],["end-pai","país"]];
+  const v = {}, faltam = [];
+  campos.forEach(([id,nome]) => {
+    const el = $(id); v[id] = el.value.trim().replace(/\s+/g," ");
+    const vazio = !v[id]; el.classList.toggle("inv", vazio); if (vazio) faltam.push(nome);
+  });
+  if (faltam.length) { document.querySelector("#addr .inv").focus(); return msg("Preencha o endereço completo. Falta: " + faltam.join(", ") + ".","err"); }
+  const nu = v["end-num"];
+  if (!/\d/.test(nu) && !/^s\/?n$/i.test(nu)) { $("end-num").classList.add("inv"); $("end-num").focus(); return msg("Informe o número do endereço (ou S/N, se o local não tiver número).","err"); }
+  const endereco = [v["end-rua"], nu, v["end-bai"], v["end-cid"], v["end-est"], v["end-pai"]].join(", ");
   const d = {
     nome: $("nome").value.trim(), nascimento: $("nasc").value, email: $("email").value.trim(),
     endereco, versao: val("versao"), modo: val("modo"), geracao: val("geracao"),
@@ -666,7 +727,7 @@ $("form").addEventListener("submit", async e => {
   const p = plano();
   const pedido = {
     nome: d.nome, nascimento: d.nascimento.split("-").reverse().join("/"), idade, email: d.email,
-    endereco: d.endereco, versao: d.versao, modo: d.modo, geracao: d.geracao, solo: d.solo, cavernas: d.cavernas,
+    endereco: d.endereco, rua: v["end-rua"], numero: nu, bairro: v["end-bai"], cidade: v["end-cid"], estado: v["end-est"], pais: v["end-pai"], versao: d.versao, modo: d.modo, geracao: d.geracao, solo: d.solo, cavernas: d.cavernas,
     plano: p.nome, valor: brl(p.preco)
   };
   const btn = $("am-go"); btn.disabled = true; msg("Confirmando pedido…");
@@ -692,6 +753,21 @@ function showPay(d, p){
   $("pay").classList.add("on");
   $("pay").scrollIntoView({behavior:"smooth",block:"start"});
 }
+})();
+(function(){
+var p=document.getElementById("promo"),home=document.getElementById("home"),t=null;
+if(!p)return;
+function esc(e){if(e.key==="Escape")hide()}
+function hide(){clearTimeout(t);p.classList.remove("on");document.removeEventListener("keydown",esc)}
+p.addEventListener("click",function(e){if(e.target===p||e.target.closest(".pclose"))hide()});
+p.querySelector(".pl").addEventListener("click",hide);
+window.addEventListener("hashchange",hide);
+setTimeout(function(){
+ if(home.hidden)return;
+ p.classList.add("on");
+ document.addEventListener("keydown",esc);
+ t=setTimeout(hide,10000);
+},700);
 })();
 </script>
 </body>
