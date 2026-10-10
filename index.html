@@ -151,6 +151,11 @@ nav a{flex:none;font-size:9px;padding:12px 10px}
 #auromaps details.q .a a{color:var(--aur)}
 #auromaps .coord-help{font-size:13px;color:var(--mut);margin:10px 0 0}
 #auromaps .coord-help a{color:var(--aur)}
+#auromaps .aviso-valores{display:flex;gap:16px;align-items:flex-start;max-width:860px;margin:0 auto 26px;padding:18px 20px;background:linear-gradient(180deg,rgba(125,249,200,.16),rgba(125,249,200,.07)),var(--card);border:4px solid var(--aur);box-shadow:6px 6px 0 rgba(0,0,0,.45),0 0 0 4px rgba(125,249,200,.18);text-shadow:none}
+#auromaps .aviso-valores .ic{flex:0 0 auto;display:grid;place-items:center;width:38px;height:38px;background:var(--aur);color:#071428;font-family:"Press Start 2P",ui-monospace,Menlo,monospace;font-size:20px;border:3px solid var(--line);box-shadow:3px 3px 0 rgba(0,0,0,.4)}
+#auromaps .aviso-valores strong.px{display:block;font-size:11px;color:var(--aur);margin-bottom:8px;letter-spacing:.5px}
+#auromaps .aviso-valores p{margin:0;font-size:15px;line-height:1.65;color:var(--ink);font-weight:600}
+@media (max-width:560px){#auromaps .aviso-valores{flex-direction:column;gap:10px;padding:16px}}
 #auromaps .plans{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
 #auromaps .plans .card b.px{display:block;color:var(--aur);font-size:16px;text-shadow:2px 2px 0 #000;margin-bottom:10px}
 #auromaps .wide{max-width:760px}
@@ -384,6 +389,7 @@ nav a{flex:none;font-size:9px;padding:12px 10px}
 
 <section id="am-precos"><div class="wrap">
 <h2>Preços</h2>
+<div class="aviso-valores" role="note" aria-label="Aviso sobre os valores"><span class="ic" aria-hidden="true">!</span><div><strong class="px">AVISO SOBRE OS VALORES</strong><p>Todo o valor arrecadado é destinado à manutenção e à hospedagem do servidor, ao custeio de suas despesas operacionais e ao investimento em projetos futuros, além de outras finalidades que a equipe do AuroraMC julgar pertinentes.</p></div></div>
 <div class="plans">
 <div class="card"><b class="px">R$ 4,99</b><h3>Região Padrão</h3><p><b>0,20 km²</b> · Conjunto de quadras<br><b>3 km²</b> · Bairro</p></div>
 <div class="card"><b class="px">R$ 6,70</b><h3>Região Plus</h3><p><b>20 km²</b> · Cidade pequena</p></div>
