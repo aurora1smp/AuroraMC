@@ -798,14 +798,20 @@ var SHEETS_URL_UNICA = "https://script.google.com/macros/s/AKfycbzYl855tN6J81-nB
 
 /* ---- Código de parceiro: opcional, em MAIÚSCULAS (letras e números), conferido na aba "Códigos" da planilha ---- */
 function normCodigo(v){return String(v||"").toUpperCase().replace(/[^A-Z0-9]/g,"")}
-var _codOk={};
+/* ===== CÓDIGOS DE PARCEIRO (guardados aqui, em hash — não aparecem em texto) =====
+   Para ADICIONAR um código: abra o arquivo gerador-de-codigos.html, digite o código,
+   copie a linha gerada e cole dentro da lista abaixo (uma por linha, com vírgula no fim).
+   Para REMOVER: apague a linha do código. */
+var CODIGOS_HASH=[
+  "079c6fbd4594e81283dbbaf578153cce676af52cffda3aac577f7a8ff9441bd5", // Robert Lucas
+];
+async function hashCodigo(c){
+  var b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode("aurora|"+c));
+  return Array.from(new Uint8Array(b)).map(function(x){return x.toString(16).padStart(2,"0")}).join("");
+}
 async function verificarCodigo(c){
   c=normCodigo(c); if(!c) return false;
-  if(_codOk[c]) return true;
-  var r=await fetch(SHEETS_URL_UNICA+"?acao=codigo&c="+encodeURIComponent(c));
-  var j=await r.json();
-  if(j.existe) _codOk[c]=true;
-  return !!j.existe;
+  return CODIGOS_HASH.indexOf(await hashCodigo(c))>=0;
 }
 function ligarCodigo(inp,st){
   var t=null,seq=0,cod="";
