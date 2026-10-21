@@ -734,9 +734,10 @@ nav a{flex:none;font-size:9px;padding:12px 10px}
 <div class="card pay" id="ah-pay">
 <span class="ok-badge">PEDIDO CONFIRMADO</span>
 <h3>Resumo do pedido</h3>
-<dl id="ah-sum"></dl>
-<div class="row" style="justify-content:flex-start;margin:6px 0 14px"><a class="btn violet" id="ah-mail" href="#">ENVIAR PEDIDO POR E-MAIL</a></div>
-<p class="imp" id="ah-imp"></p>
+<p id="ah-sum"></p>
+<div id="ah-payLink" hidden style="margin:6px 0 14px"><a class="btn violet" id="ah-payBtn" href="#" target="_blank" rel="noopener">IR PARA O PAGAMENTO</a></div>
+<p id="ah-payInfo" hidden>Entraremos em contato pelo e-mail informado com as instruções de pagamento.</p>
+<p class="imp" id="ah-imp" style="margin-top:14px"></p>
 </div>
 </div></section>
 
@@ -1052,13 +1053,13 @@ setTimeout(function(){
 <script>
 (function(){
 // ===== Ajuste aqui =====
-var CONTATO_EMAIL = "contato@aurohost.com.br"; // e-mail que recebe os pedidos
+// Em cada plano abaixo, cole o link de pagamento em  link:"..."  (se ficar vazio, o site avisa que a equipe entra em contato).
 var PLANILHA_URL = SHEETS_URL_UNICA; // mesma planilha do Auromaps (cada produto grava na sua aba)
 var PLANOS = [
- {nome:"Básico",preco:29.90,rec:[0,0,0],itens:["Até 4 jogadores","CPU Padrão","Até 3 GB RAM","SSD NVMe ilimitado","Subdomínio grátis","Proteção Anti-DDoS"]},
- {nome:"Pro",preco:59.90,rec:[1,1,0],itens:["Jogadores ilimitados","CPU Padrão","RAM ilimitada","SSD NVMe ilimitado","Subdomínio grátis","Proteção Anti-DDoS"]},
- {nome:"Avançado",preco:89.90,rec:[1,1,1],itens:["Jogadores ilimitados","CPU Avançada","RAM ilimitada","SSD NVMe ilimitado","Subdomínio grátis","Proteção Anti-DDoS"]},
- {nome:"Premium",preco:134.90,rec:[1,1,2],itens:["Jogadores ilimitados","CPU Extrema","RAM ilimitada","SSD NVMe ilimitado","Subdomínio grátis","Proteção Anti-DDoS"]}
+ {nome:"Básico",link:"",preco:29.90,rec:[0,0,0],itens:["Até 4 jogadores","CPU Padrão","Até 3 GB RAM","SSD NVMe ilimitado","Subdomínio grátis","Proteção Anti-DDoS"]},
+ {nome:"Pro",link:"",preco:59.90,rec:[1,1,0],itens:["Jogadores ilimitados","CPU Padrão","RAM ilimitada","SSD NVMe ilimitado","Subdomínio grátis","Proteção Anti-DDoS"]},
+ {nome:"Avançado",link:"",preco:89.90,rec:[1,1,1],itens:["Jogadores ilimitados","CPU Avançada","RAM ilimitada","SSD NVMe ilimitado","Subdomínio grátis","Proteção Anti-DDoS"]},
+ {nome:"Premium",link:"",preco:134.90,rec:[1,1,2],itens:["Jogadores ilimitados","CPU Extrema","RAM ilimitada","SSD NVMe ilimitado","Subdomínio grátis","Proteção Anti-DDoS"]}
 ];
 // =======================
 var G={
@@ -1071,7 +1072,7 @@ var G={
  jog:{l:"JOGADORES",o:[["4","Até 4 jogadores."],["Ilimitado","Sem limite de jogadores."]],d:0},
  cpu:{l:"CPU",o:[["Padrão","Ótima para jogar com amigos."],["Avançada","Mais desempenho para muita gente e addons."],["Extrema","Desempenho máximo para servidores grandes."]],d:0}
 };
-var S={nome:"",seu:"",email:"",tel:"",seed:"",wl:true,ch:false,plano:0};
+var S={nome:"",seu:"",nasc:"",email:"",tel:"",seed:"",wl:true,ch:false,plano:0};
 for(var k in G)S[k]=G[k].d;
 var NOMES_PLANO=["Básico","Pro","Avançado","Premium"];
 var $=function(i){return document.getElementById("ah-"+i)};
@@ -1098,6 +1099,7 @@ function build(){
  h+='<div class="tgs" style="margin-top:22px"><label class="tg"><span><b>WHITELIST</b>Só entra quem você autorizar.</span><input type="checkbox" id="ah-wl" checked></label><label class="tg"><span><b>CHEATS</b>Permite comandos como /gamemode.</span><input type="checkbox" id="ah-ch"></label></div>';
   h+='<span class="lb" style="margin-top:34px">3. SEUS DADOS</span>';
  h+='<label for="ah-seu">SEU NOME</label><input id="ah-seu" type="text" maxlength="80" placeholder="Seu nome" autocomplete="name" required>';
+ h+='<label for="ah-nasc">DATA DE NASCIMENTO</label><input id="ah-nasc" type="date" min="1900-01-01" required>';
  h+='<label for="ah-email">SEU E-MAIL<small>É por esse e-mail que entramos em contato.</small></label><input id="ah-email" type="email" maxlength="120" placeholder="voce@exemplo.com" autocomplete="email" required>';
  h+='<label for="ah-tel">SEU TELEFONE<small>Com DDD. Usamos para entrar em contato.</small></label><input id="ah-tel" type="tel" maxlength="20" placeholder="(47) 99999-9999" autocomplete="tel" required>';
  h+='<label for="ah-cod">CÓDIGO DE PARCEIRO<small>Opcional. Se você tem um código de parceiro, digite aqui (letras maiúsculas e números).</small></label><input id="ah-cod" type="text" maxlength="20" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="Ex.: PARCEIRO10"><p class="cod-st" id="ah-cod-st" role="status"></p>';
@@ -1116,6 +1118,7 @@ function build(){
   }
   else if(tid==="nome")S.nome=t.value;
   else if(tid==="seu")S.seu=t.value;
+  else if(tid==="nasc")S.nasc=t.value;
   else if(tid==="email")S.email=t.value;
   else if(tid==="tel")S.tel=t.value;
   else if(tid==="seed")S.seed=t.value;
@@ -1155,6 +1158,11 @@ function linhas(){
  var pr=S.mapa===1,p=PLANOS[S.plano];
  return [["Servidor",S.nome.trim()],["Versão","Minecraft Bedrock"],["Modo de jogo",opt("modo")],["Dificuldade",opt("dif")],["Mapa",opt("mapa")+(pr?" (coletado pelo suporte)":"")],["Seed",pr?"—":(S.seed.trim()||"Aleatória")],["Addons",opt("addons")+(S.addons?" (coletado pelo suporte)":"")],["Whitelist",S.wl?"Ativada":"Desativada"],["Cheats",S.ch?"Ativados":"Desativados"],["RAM",opt("ram")],["Jogadores",opt("jog")],["CPU",opt("cpu")],["Plano",p.nome+" — "+brl(p.preco)+"/mês"],["Cliente",S.seu.trim()],["E-mail",S.email],["Telefone",S.tel.trim()]];
 }
+function idadeDe(v){
+ var n=new Date(v+"T00:00:00"),h=new Date(),i=h.getFullYear()-n.getFullYear();
+ if(h<new Date(h.getFullYear(),n.getMonth(),n.getDate()))i--;
+ return isNaN(i)?NaN:i;
+}
 var ultimoEnvio="",ultimoPedido="";
 function limpa(v){v=String(v);return /^[=+\-@]/.test(v)?"'"+v:v}
 // Envia o pedido para a aba Aurohost da planilha; o Apps Script gera o código (#AH01, #AH02…) e devolve.
@@ -1165,6 +1173,7 @@ async function registrar(L){
  d["Data/hora"]=new Date().toLocaleString("pt-BR",{timeZone:"America/Sao_Paulo"});
  L.forEach(function(r){d[r[0]]=limpa(r[1])});
  d["Plano"]=p.nome;d["Valor"]=brl(p.preco);
+ d["Nascimento"]=S.nasc.split("-").reverse().join("/");
  d["Telefone"]=S.tel.replace(/[^\d()\s-]/g,"").trim();
  d["codigo"]=COD?COD.valor():"";
  var corpo=JSON.stringify(d),chave=corpo.replace(/"Data\/hora":"[^"]*",/,"");
@@ -1180,6 +1189,7 @@ async function enviar(ev){
  var m=$("msg"),bad=null;
  if(!S.nome.trim())bad=["nome","Dê um nome ao seu servidor."];
  else if(!S.seu.trim())bad=["seu","Informe o seu nome."];
+ else if(!S.nasc||!(idadeDe(S.nasc)>=5&&idadeDe(S.nasc)<=120))bad=["nasc","Informe uma data de nascimento válida."];
  else if(!/^\S+@\S+\.\S+$/.test(S.email))bad=["email","Informe um e-mail válido."];
  else if(S.tel.replace(/\D/g,"").length<10)bad=["tel","Informe um telefone com DDD."];
  else if(!$("aceite").checked)bad=["aceite","Marque que entendeu como o suporte coletará mapa e addons."];
@@ -1190,17 +1200,27 @@ async function enviar(ev){
    m.textContent=COD.valor()?"Corrija ou apague o código de parceiro para continuar.":"Não foi possível confirmar o pedido.";
    $("cod").focus();go.disabled=false;return;
   }
-  var L=linhas(),r=await registrar(L);
-  if(r.pedido)L.unshift(["Pedido",r.pedido]);
-  if(COD.valor())L.push(["Código de parceiro",COD.valor()]);
+  var L=linhas(),r=await registrar(L),p=PLANOS[S.plano],cv=COD.valor();
   m.textContent="";
-  $("sum").innerHTML=L.map(function(r){return '<dt>'+r[0]+'</dt><dd>'+esc(r[1])+'</dd>'}).join("");
-  $("mail").href="mailto:"+CONTATO_EMAIL+"?subject="+encodeURIComponent("Pedido Aurohost — "+S.nome.trim())+"&body="+encodeURIComponent("Pedido Aurohost\n\n"+L.map(function(r){return r[0]+": "+r[1]}).join("\n"));
-  var tx="Depois de confirmar o pedido, o suporte entrará em contato";
+  $("sum").innerHTML=(r.pedido?'Pedido: <b>'+esc(r.pedido)+'</b><br>':'')
+   +'<b>'+esc(S.seu.trim())+'</b> · '+idadeDe(S.nasc)+' anos (nascimento '+esc(S.nasc.split("-").reverse().join("/"))+')<br>'
+   +'Servidor: <b>'+esc(S.nome.trim())+'</b> · Minecraft Bedrock<br>'
+   +'Modo de jogo: '+esc(opt("modo"))+' · Dificuldade: '+esc(opt("dif"))+'<br>'
+   +'Mapa: '+esc(opt("mapa"))+' · Seed: '+esc(S.mapa===1?"—":(S.seed.trim()||"Aleatória"))+'<br>'
+   +'Addons: '+esc(opt("addons"))+'<br>'
+   +'Whitelist: '+(S.wl?"Ativada":"Desativada")+' · Cheats: '+(S.ch?"Ativados":"Desativados")+'<br>'
+   +'RAM: '+esc(opt("ram"))+' · Jogadores: '+esc(opt("jog"))+' · CPU: '+esc(opt("cpu"))+'<br>'
+   +'Plano: <b>'+esc(p.nome)+'</b><br>'
+   +'E-mail de contato: <b>'+esc(S.email)+'</b> · Telefone: '+esc(S.tel.trim())
+   +(cv?'<br>Código de parceiro: <b>'+esc(cv)+'</b>':'')
+   +'<br>Valor: <b>'+esc(brl(p.preco))+'/mês</b>';
+  if(p.link){$("payLink").hidden=false;$("payBtn").href=p.link;$("payInfo").hidden=true}
+  else{$("payLink").hidden=true;$("payInfo").hidden=false}
+  var tx="só começamos a configurar o seu servidor depois que o pagamento for confirmado. O suporte entra em contato pelo e-mail ou telefone informado";
   if(S.addons===1&&S.mapa===1)tx+=" para coletar os seus addons e o seu mapa.";
   else if(S.addons===1)tx+=" para coletar os seus addons.";
   else if(S.mapa===1)tx+=" para coletar o seu mapa.";
-  else tx="Depois de confirmar, envie o pedido por e-mail e o suporte retorna com os próximos passos.";
+  else tx+=" com os próximos passos.";
   $("imp").innerHTML="<b>Importante:</b> "+tx;
   $("pay").classList.add("on");
   $("pay").scrollIntoView({behavior:"smooth",block:"start"});
