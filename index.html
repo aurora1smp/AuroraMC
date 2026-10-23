@@ -794,12 +794,12 @@ nav a{flex:none;font-size:9px;padding:12px 10px}
 </div>
 <script>
 /* Planilha do Google ÚNICA: Auromaps e Aurohost enviam para a mesma URL (/exec); o campo "produto" decide a aba. */
-var SHEETS_URL_UNICA = "https://script.google.com/macros/s/AKfycbzYl855tN6J81-nBGeZszvHucdtX9do0UuvcEcquPFXqAcB68mhIMOP6LCX5NNyq8NS/exec";
+var SHEETS_URL_UNICA = "https://script.google.com/macros/s/AKfycbx-os-mZF0Dn7df4vzsKp-Enn7WFF_VNW_V9Mg9InDJ0_kLRWxItigP1CrFGsIiFFCAIQ/exec";
 
-/* ---- Código de parceiro: opcional, em MAIÚSCULAS (letras e números), conferido na aba "Códigos" da planilha ---- */
+/* ---- Código de parceiro: opcional, em MAIÚSCULAS (letras e números), conferido no Apps Script (lista PARCEIROS no Codigo.gs) ---- */
 function normCodigo(v){return String(v||"").toUpperCase().replace(/[^A-Z0-9]/g,"")}
 /* ===== CÓDIGOS DE PARCEIRO =====
-   A lista fica só na aba "Códigos" da planilha. Para adicionar ou remover um código, edite a aba.
+   A lista fica só no Codigo.gs (variável PARCEIROS). Para adicionar ou remover um código, edite lá e publique uma nova versão.
    O site pergunta ao Apps Script (?acao=codigo&c=...) se o código existe. */
 async function verificarCodigo(c){
   c=normCodigo(c); if(!c) return false;
