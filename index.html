@@ -803,10 +803,17 @@ function normCodigo(v){return String(v||"").toUpperCase().replace(/[^A-Z0-9]/g,"
    O site pergunta ao Apps Script (?acao=codigo&c=...) se o código existe. */
 async function verificarCodigo(c){
   c=normCodigo(c); if(!c) return false;
-  var r=await fetch(SHEETS_URL_UNICA+"?acao=codigo&c="+encodeURIComponent(c));
-  if(!r.ok) throw new Error("http "+r.status);
-  var j=await r.json();
-  return j.existe===true;
+  var j=null;
+  try{
+    var r=await fetch(SHEETS_URL_UNICA+"?acao=codigo&c="+encodeURIComponent(c));
+    j=await r.json();
+  }catch(e1){
+    console.warn("Verificação por GET falhou, tentando POST:",e1);
+    var r2=await fetch(SHEETS_URL_UNICA,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({acao:"codigo",c:c})});
+    j=await r2.json();
+  }
+  if(!j||typeof j.existe!=="boolean"){console.warn("Resposta inesperada do script:",j);throw new Error("resposta inesperada")}
+  return j.existe;
 }
 function ligarCodigo(inp,st){
   var t=null,seq=0,cod="";
