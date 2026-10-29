@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Aurohost e Auromaps — Aurora</title>
+<title>AuroHost e Auromaps — Aurora</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#eaf6e4;--card:#fff;--ink:#0f1f3d;--mut:#5d6c86;--blue:#0a84f5;--blue2:#0668c9;--blue-soft:#e8f3ff;--yel:#ffb800;--yel2:#e5a400;--green:#1b6e2a;--green2:#14561f;--mint:#e3f6e6;--line:#e1eaf3;
@@ -113,7 +113,7 @@ details .a{padding:0 18px 16px;color:var(--mut);font-weight:600}
 <body>
 <nav><div class="wrap">
 <a class="logo" href="index.html">Aurora</a>
-<button class="tab" data-tab="aurohost" aria-selected="true">Aurohost</button>
+<button class="tab" data-tab="aurohost" aria-selected="true">AuroHost</button>
 <button class="tab" data-tab="auromaps" aria-selected="false">Auromaps</button>
 </div></nav>
 
@@ -121,15 +121,30 @@ details .a{padding:0 18px 16px;color:var(--mut);font-weight:600}
 
 <div id="t-aurohost">
 <div class="hero">
-<h1>Aurohost</h1>
+<h1>AuroHost</h1>
 <p class="lead">Seu servidor de Minecraft Bedrock, pronto para jogar.</p>
-<p>Você escolhe como quer o mundo. A gente entrega o servidor com mapa e configurações feitas, sem você precisar entender de códigos ou plugins.</p>
+<p>Você escolhe como quer o mundo. Nós cuidamos da parte técnica e entregamos o servidor pronto.</p>
+<p><b>Prazo:</b> seu servidor fica pronto em até <b>48 horas</b> após a confirmação do pagamento.</p>
 <div class="row"><a class="btn main" href="#ah-pedido">Montar meu servidor</a><a class="btn alt" href="#ah-como">Como funciona</a></div>
 </div>
 
+<section id="ah-sobre">
+<h2>O que é a AuroHost?</h2>
+<div class="card plano">
+<p>É um Host de Minecraft com configuração e gerenciamento inclusos. Mais simples, prática e acessível.</p>
+<ul>
+<li>Configuração inicial do servidor</li>
+<li>Preparação para você entrar e jogar</li>
+<li>Gerenciamento do mapa</li>
+<li>Suporte técnico e de console</li>
+<li>Liberdade para criar, explorar e reunir jogadores</li>
+</ul>
+</div>
+</section>
+
 <section id="ah-planos">
 <h2>Planos</h2>
-<div class="aviso">Os valores são mensais. O plano já define jogadores, RAM e CPU.</div>
+<div class="aviso">Os valores são mensais. O plano já define jogadores, RAM e CPU. O servidor fica pronto em até 48h após o pagamento.</div>
 <div id="ah-plans"></div>
 </section>
 
@@ -138,15 +153,15 @@ details .a{padding:0 18px 16px;color:var(--mut);font-weight:600}
 <div class="steps">
 <div class="card"><h3>Monte seu servidor</h3><p>Escolha o plano e personalize nome, modo de jogo, dificuldade e opções do mundo. O valor aparece na hora.</p></div>
 <div class="card"><h3>Preencha seus dados</h3><p>Informe nome, e-mail e telefone. Usamos esses dados para entrar em contato com você.</p></div>
-<div class="card"><h3>Confirme e pague</h3><p>Confira o resumo do pedido e faça o pagamento.</p></div>
+<div class="card"><h3>Confirme e pague</h3><p>Confira o resumo e faça o pagamento.</p></div>
 <div class="card"><h3>Envie mapa e addons</h3><p>Se escolheu mapa próprio ou addons, o suporte entra em contato após a confirmação para receber os arquivos.</p></div>
-<div class="card"><h3>Entre e jogue</h3><p>O servidor chega configurado, com o mapa e as opções que você escolheu.</p></div>
+<div class="card"><h3>Entre e jogue</h3><p>Após o pagamento, o servidor fica pronto em até <b>48h</b>, com o mapa e as opções que você escolheu, e avisamos pelos contatos que você forneceu.</p></div>
 </div>
 </section>
 
 <section id="ah-pedido" style="padding-top:0"><div class="wrap">
 <h2>Fazer pedido</h2>
-<div class="aviso"><b>Antes de pedir</b><br>• O servidor é <b>só Minecraft Bedrock</b>.<br>• <b>Mapa próprio</b> e <b>addons</b> são coletados pelo suporte: depois que você confirmar o pedido, entramos em contato.<br>• O plano que você escolheu em Planos aparece no total do pedido.</div>
+<div class="aviso"><b>Antes de pedir</b><br>• O servidor é <b>só Minecraft Bedrock</b>.<br>• <b>Mapa próprio</b> e <b>addons</b> são coletados pelo suporte: depois que você confirmar o pedido, entramos em contato.<br>• O plano que você escolheu em Planos aparece no total do pedido.<br>• Após a confirmação do pagamento, o servidor fica pronto em <b>até 48h</b> e os dados de acesso são enviados pelos contatos que você forneceu (e-mail e telefone).</div>
 <form class="conv" id="ah-form" novalidate></form>
 <div class="card pay" id="ah-pay">
 <span class="ok-badge">PEDIDO CONFIRMADO</span>
@@ -162,14 +177,17 @@ details .a{padding:0 18px 16px;color:var(--mut);font-weight:600}
 <section>
 <h2>Nossa experiência</h2>
 <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(280px,1fr))">
-<div class="card"><h3>Quem faz a Aurohost</h3><p>A equipe tem ampla experiência em desenvolvimento, configuração e manutenção de servidores de Minecraft.</p></div>
-<div class="card"><h3>O servidor Aurora</h3><p>Administramos o Aurora, em atividade há mais de três anos. Nele acumulamos experiência em configuração, manutenção técnica, addons e testes.</p><p><a href="index.html">Conheça a história do Aurora</a></p></div>
+<div class="card"><h3>Quem faz a AuroHost</h3><p>A equipe tem ampla experiência em desenvolvimento, configuração e manutenção de servidores de Minecraft.</p></div>
+<div class="card"><h3>O servidor Aurora</h3><p>Administramos o Aurora, em atividade há mais de três anos. Nele acumulamos experiência em configuração, manutenção técnica, addons e testes.</p><p><a href="https://aurorabr.aurora1smp.workers.dev/" target="_blank" rel="noopener">Conheça a história do Aurora</a></p></div>
 <div class="card"><h3>Mais de seis anos de estrada</h3><p>Um membro da equipe tem mais de seis anos com servidores de Minecraft, em diversos projetos, com muitos testes e ajustes ao longo do caminho.</p></div>
 </div>
 </section>
 
 <section>
 <h2>Perguntas frequentes</h2>
+<details><summary>O que é a AuroHost?</summary><div class="a">É um Host de Minecraft com configuração e gerenciamento inclusos.</div></details>
+<details><summary>O que está incluso no Host?</summary><div class="a">Configuração inicial, preparação do servidor, gerenciamento do mapa e suporte técnico e de console.</div></details>
+<details><summary>Quanto tempo demora para o servidor ficar pronto?</summary><div class="a">Até 48h após a confirmação do pagamento.</div></details>
 <details><summary>Quanto custa?</summary><div class="a" id="ah-faqprice"></div></details>
 <details><summary>Como o plano é escolhido?</summary><div class="a">Você escolhe em Planos, e ele já define os recursos. O Básico é o menor: 4 jogadores, 3 GB de RAM e CPU Padrão. O Pro tem jogadores e RAM ilimitados, o Avançado soma CPU Avançada e o Premium tem CPU Extrema.</div></details>
 <details><summary>Qual a diferença entre as CPUs?</summary><div class="a">A Padrão atende bem grupos de amigos. A Avançada dá mais desempenho para mais jogadores e addons. A Extrema é a mais potente.</div></details>
@@ -180,16 +198,16 @@ details .a{padding:0 18px 16px;color:var(--mut);font-weight:600}
 <details><summary>O que são cheats?</summary><div class="a">São comandos como /gamemode e /time. Com cheats ativados, quem tem permissão pode usá-los.</div></details>
 </section>
 
-<section><div class="card cta"><h3>Pronto para jogar?</h3><p>Escolha seu plano e monte seu servidor agora. Nossa equipe cuida do resto.</p><div class="row"><a class="btn main" href="#ah-pedido">Montar meu servidor</a></div></div></section>
+<section><div class="card cta"><h3>Pronto para jogar?</h3><p>Escolha seu plano e monte seu servidor agora. Ele fica pronto em até 48h após o pagamento.</p><div class="row"><a class="btn main" href="#ah-pedido">Montar meu servidor</a></div></div></section>
 
 <section>
 <h2>Créditos e termos de uso</h2>
 <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(280px,1fr))">
-<div class="card"><h3>Minecraft</h3><p>Minecraft é uma marca da Mojang Studios e da Microsoft. A Aurohost não é afiliada a elas.</p></div>
+<div class="card"><h3>Minecraft</h3><p>Minecraft é uma marca da Mojang Studios e da Microsoft. A AuroHost não é afiliada a elas.</p></div>
 <div class="card"><h3>Blazehosting</h3><p>Não somos associados nem temos parceria com a empresa Blazehosting.</p></div>
 </div>
 </section>
-<p class="foot">Aurohost · servidores de Minecraft Bedrock prontos para jogar · Não afiliado à Mojang ou à Microsoft.</p>
+<p class="foot">AuroHost · servidores de Minecraft Bedrock prontos para jogar · Não afiliado à Mojang ou à Microsoft.</p>
 </div>
 
 <div id="t-auromaps" hidden>
@@ -217,14 +235,14 @@ details .a{padding:0 18px 16px;color:var(--mut);font-weight:600}
 <div class="card"><h3>Informe endereço e tamanho</h3><p>O endereço fica no meio de um quadrado e é onde você nasce (spawn). Escolha o tamanho e veja o preço na hora.</p></div>
 <div class="card"><h3>Preencha seus dados</h3><p>Nome, data de nascimento e e-mail. É nesse e-mail que você recebe o mapa.</p></div>
 <div class="card"><h3>Faça o pagamento</h3><p>Só começamos a gerar o mapa <b>depois que o pagamento for confirmado</b>.</p></div>
-<div class="card"><h3>Receba por e-mail</h3><p>Enviamos o mapa em até <b>3 dias</b> após a confirmação do pagamento.</p></div>
+<div class="card"><h3>Receba o mapa</h3><p>Após a confirmação do pagamento, o mapa fica pronto em até <b>7 dias</b> e é enviado pelos contatos que você forneceu.</p></div>
 </div>
 </section>
 
 <section id="am-pedido" style="padding-top:0"><div class="wrap">
 <h2>Fazer pedido</h2>
 
-<div class="aviso"><b>Antes de pedir</b><br>• O mapa <b>só começa a ser gerado após o pagamento</b>.<br>• O prazo de entrega é de <b>até 3 dias</b> depois da confirmação do pagamento, enviado para o seu e-mail.<br>• O endereço que você informar fica no <b>centro</b> da área e será o seu <b>spawn</b>..</div>
+<div class="aviso"><b>Antes de pedir</b><br>• O mapa <b>só começa a ser gerado após o pagamento</b>.<br>• Após a confirmação do pagamento, o pedido fica pronto em <b>até 7 dias</b> e é enviado pelos contatos que você forneceu (e-mail e telefone).<br>• O endereço que você informar fica no <b>centro</b> da área e será o seu <b>spawn</b>.</div>
 
 <div class="conv" style="max-width:none">
 <form id="form" novalidate>
@@ -292,7 +310,7 @@ details .a{padding:0 18px 16px;color:var(--mut);font-weight:600}
 <input id="am-cod" type="text" maxlength="20" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="Ex.: PARCEIRO10">
 <p class="cod-st" id="am-cod-st" role="status"></p>
 
-<label class="chk"><input type="checkbox" id="aceite" required><span>Entendi que o mapa <b>só começa a ser gerado após o pagamento</b> e que a entrega leva <b>até 3 dias</b>.</span></label>
+<label class="chk"><input type="checkbox" id="aceite" required><span>Entendi que o mapa <b>só começa a ser gerado após o pagamento</b> e que a entrega leva <b>até 7 dias</b>.</span></label>
 
 <div class="total"><span>TOTAL</span><b id="total">—</b></div>
 
@@ -307,7 +325,7 @@ details .a{padding:0 18px 16px;color:var(--mut);font-weight:600}
 <p id="resumo"></p>
 <div id="payLink" hidden><a class="btn alt" id="payBtn" href="#" target="_blank" rel="noopener">IR PARA O PAGAMENTO</a></div>
 <p id="payInfo" hidden>Entraremos em contato pelo e-mail informado com as instruções de pagamento.</p>
-<p style="margin-top:14px"><b>Importante:</b> só começamos a gerar seu mapa depois que o pagamento for confirmado. Você recebe o mapa no e-mail informado em até <b>3 dias</b> após a confirmação.</p>
+<p style="margin-top:14px"><b>Importante:</b> só começamos a gerar seu mapa depois que o pagamento for confirmado. Quando ficar pronto, em até <b>7 dias</b> após a confirmação, enviamos o mapa pelos contatos informados (e-mail e telefone).</p>
 </div>
 
 </div>
@@ -318,7 +336,7 @@ details .a{padding:0 18px 16px;color:var(--mut);font-weight:600}
 <h2>Perguntas frequentes</h2>
 <details><summary>Quanto custa?</summary><div class="a">Região Padrão, R$ 4,99: 0,20 km² ou 3 km². Região Plus, R$ 6,70: 20 km². Região Premium, R$ 9,99: 50 km² ou 100 km².</div></details>
 <details><summary>Quando meu mapa começa a ser feito?</summary><div class="a">Somente depois que o pagamento for confirmado. Sem pagamento, o mapa não é gerado.</div></details>
-<details><summary>Quanto tempo demora?</summary><div class="a">O envio é feito em até 3 dias depois da confirmação do pagamento, para o e-mail do pedido.</div></details>
+<details><summary>Quanto tempo demora?</summary><div class="a">Depois da confirmação do pagamento, o mapa fica pronto em até 7 dias e é enviado pelos contatos informados no pedido.</div></details>
 <details><summary>O que é o spawn?</summary><div class="a">É o ponto onde você nasce no mapa. Aqui ele é o endereço que você informar, que também fica no centro da área.</div></details>
 <details><summary>De onde vêm os dados do mapa?</summary><div class="a">O Arnis usa o <a href="https://www.openstreetmap.org/" target="_blank" rel="noopener">OpenStreetMap</a> para edifícios, estradas e uso do solo, via API Overpass. Elevação e terreno vêm do <a href="https://registry.opendata.aws/terrain-tiles/" target="_blank" rel="noopener">AWS Terrain Tiles</a>.</div></details>
 <details><summary>Por que o mapa pode ter menos detalhes em alguns lugares?</summary><div class="a">Os dados do OSM são feitos pela comunidade, então a cobertura varia. Cidades bem mapeadas geram mundos mais detalhados; regiões rurais podem ter dados incompletos.</div></details>
@@ -697,7 +715,7 @@ async function enviar(ev){
    +'<br>Valor: <b>'+esc(brl(p.preco))+'/mês</b>';
   if(p.link){$("payLink").hidden=false;$("payBtn").href=p.link;$("payInfo").hidden=true}
   else{$("payLink").hidden=true;$("payInfo").hidden=false}
-  var tx="só começamos a configurar o seu servidor depois que o pagamento for confirmado. O suporte entra em contato pelo e-mail ou telefone informado";
+  var tx="só começamos a configurar o seu servidor depois que o pagamento for confirmado, e ele fica pronto em até 48h após a confirmação. O suporte entra em contato pelo e-mail ou telefone informado";
   if(S.addons===1&&S.mapa===1)tx+=" para coletar os seus addons e o seu mapa.";
   else if(S.addons===1)tx+=" para coletar os seus addons.";
   else if(S.mapa===1)tx+=" para coletar o seu mapa.";
