@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Aurohost e Auromaps — Aurora</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#eaf6e4;--card:#fff;--ink:#0f1f3d;--mut:#5d6c86;--blue:#0a84f5;--blue2:#0668c9;--blue-soft:#e8f3ff;--yel:#ffb800;--yel2:#e5a400;--green:#1b6e2a;--green2:#14561f;--mint:#e3f6e6;--line:#e1eaf3;
+color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 70px);scroll-behavior:smooth}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 "Nunito",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;min-height:100vh}
+body::before{content:"";position:fixed;inset:0;z-index:-1;background:radial-gradient(ellipse at 15% 0%,#d3f0cf,transparent 55%),linear-gradient(#eef9ea,#e4f4de 60%,#f3fbf0)}
+h1,h2,h3{font-weight:900;line-height:1.25;letter-spacing:-.01em;margin:0}
+[hidden]{display:none!important}
+.wrap{max-width:1180px;margin:0 auto;padding:0 18px}
+a{color:var(--blue2)}
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:9;background:rgba(255,255,255,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+nav .wrap{display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding:12px 18px}
+nav .logo{font-weight:900;font-size:22px;color:var(--green);margin-right:auto;padding:4px 6px;letter-spacing:-.02em;text-decoration:none}
+nav button.tab{font:inherit;font-weight:800;font-size:15px;color:var(--ink);background:none;border:1px solid transparent;border-radius:14px;padding:10px 16px;cursor:pointer}
+nav button.tab:hover{background:var(--mint)}
+nav button.tab[aria-selected="true"]{background:var(--mint);border-color:#bfe6c6;color:var(--green)}
+@media (max-width:700px){nav button.tab{font-size:13px;padding:8px 10px}nav .logo{font-size:18px}}
+body::after{content:"";position:fixed;top:0;left:0;right:0;height:env(safe-area-inset-top,0px);background:rgba(255,255,255,.92);z-index:10}
+.btn{font:inherit;font-weight:900;font-size:14px;cursor:pointer;border:1px solid #bfdcf8;background:var(--blue-soft);color:var(--blue2);padding:11px 18px;border-radius:14px;display:inline-block;text-decoration:none;transition:.15s}
+.btn:hover{filter:brightness(.97);transform:translateY(-1px)}
+.btn.main{background:var(--green);border-color:var(--green2);color:#fff;box-shadow:0 3px 0 var(--green2)}
+.btn.alt{background:var(--blue);border-color:var(--blue2);color:#fff;box-shadow:0 3px 0 var(--blue2)}
+:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:24px;padding:20px;box-shadow:0 10px 30px rgba(20,60,40,.08)}
+.card h3{font-size:13px;margin:0 0 10px;color:var(--mut);text-transform:uppercase;letter-spacing:.04em}
+.card p{margin:0 0 10px}.card p:last-child{margin:0}
+main{padding:32px 0 50px}
+section{margin-top:44px}
+h2{font-size:clamp(22px,3.4vw,30px);margin-bottom:18px}
+.hero{background:#fff;border:1px solid var(--line);border-radius:28px;padding:clamp(24px,5vw,44px);box-shadow:0 10px 30px rgba(20,60,40,.08)}
+.hero h1{font-size:clamp(34px,6vw,54px);color:var(--green);margin-bottom:10px}
+.hero .lead{font-size:19px;font-weight:800;margin:0 0 8px}
+.hero p{max-width:620px;color:var(--mut);margin:0 0 18px}
+.row{display:flex;flex-wrap:wrap;gap:12px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:16px}
+.num{font-weight:900;font-size:30px;color:var(--blue);letter-spacing:-.02em;margin:0 0 2px}
+.num small{font-size:14px;color:var(--mut);font-weight:800}
+.plano h4{margin:0 0 4px;font-size:20px;font-weight:900}
+.plano ul{list-style:none;padding:0;margin:14px 0 0;display:grid;gap:6px}
+.plano li{font-weight:700;font-size:14px;padding-left:24px;position:relative}
+.plano li::before{content:"";position:absolute;left:0;top:5px;width:14px;height:14px;border-radius:50%;background:var(--mint);border:3px solid #bfe6c6}
+.plano.dest{border:2px solid var(--blue);position:relative}
+.tag{display:inline-block;font-weight:900;font-size:12px;background:var(--blue-soft);color:var(--blue2);border-radius:999px;padding:5px 11px;margin-bottom:10px}
+.aviso{border:1px solid #f3d88a;background:#fff8e0;color:#7a5a00;border-radius:14px;padding:12px 16px;font-weight:700;margin-bottom:16px}
+.steps{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:16px}
+.steps .card{border-top:5px solid var(--green)}
+details{background:#fff;border:1px solid var(--line);border-radius:18px;margin-bottom:10px;box-shadow:0 10px 30px rgba(20,60,40,.06)}
+summary{cursor:pointer;font-weight:800;padding:14px 18px;list-style:none;display:flex;justify-content:space-between;gap:12px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";font-weight:900;color:var(--blue);font-size:20px;line-height:1}
+details[open] summary::after{content:"–"}
+details .a{padding:0 18px 16px;color:var(--mut);font-weight:600}
+.cta{background:var(--mint);border-color:#bfe6c6;text-align:center;padding:30px 20px}
+.cta h3{font-size:22px;color:var(--green);text-transform:none;letter-spacing:-.01em}
+.cta .row{justify-content:center;margin-top:14px}
+.foot{text-align:center;font-size:13px;color:var(--mut);padding:30px 0 40px;border-top:1px solid var(--line);margin-top:50px}
+.sz{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px}
+.sz span{font-weight:800;font-size:13px;background:var(--mint);color:var(--green);border-radius:999px;padding:6px 12px}
+
+.conv{max-width:700px;margin:0 auto}
+.conv label,.conv .lb{display:block;font-weight:900;font-size:13px;letter-spacing:.03em;color:var(--green);margin:24px 0 8px}
+.conv label small,.conv .lb small{display:block;font-weight:700;font-size:12.5px;letter-spacing:0;color:var(--mut);margin-top:3px}
+.conv input[type=text],.conv input[type=email],.conv input[type=tel],.conv input[type=date]{width:100%;font:inherit;font-weight:700;color:var(--ink);background:#fff;border:2px solid var(--line);border-radius:14px;padding:12px 14px}
+.conv input:disabled{opacity:.5}
+.conv input.inv{border-color:#e5484d}
+.conv input[type=text]:focus,.conv input[type=email]:focus,.conv input[type=tel]:focus,.conv input[type=date]:focus{border-color:var(--blue);outline:none}
+#am-cod,#ah-cod{text-transform:uppercase;letter-spacing:1px}
+.addr{display:grid;grid-template-columns:repeat(6,1fr);gap:12px}
+.addr .f{grid-column:span 3}.addr .f-rua{grid-column:span 4}.addr .f-num{grid-column:span 2}
+.addr label{margin:0 0 6px;font-size:11px}
+.coord-help,.hint{font-size:13px;color:var(--mut);margin:10px 0 0;font-weight:600}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px}
+.conv label.opt,.conv label.tg,.conv label.chk{letter-spacing:0;margin:0;font-weight:700;color:var(--mut);font-size:13px;line-height:1.45;cursor:pointer}
+.opt{position:relative;display:block}
+.opt input{position:absolute;opacity:0;width:1px;height:1px}
+.opt .box{display:block;height:100%;background:#fff;border:2px solid var(--line);border-radius:16px;padding:14px 40px 14px 14px;position:relative}
+.opt .box b{display:block;font-size:15px;color:var(--ink);margin-bottom:3px}
+.opt .box::after{content:"";position:absolute;right:13px;top:14px;width:18px;height:18px;border-radius:50%;border:2px solid #bfd0e2;background:#fff}
+.opt input:checked + .box{border-color:var(--green);background:var(--mint)}
+.opt input:checked + .box::after{border-color:var(--green);background:var(--green);box-shadow:inset 0 0 0 3px #fff}
+.opt input:focus-visible + .box{outline:3px solid var(--blue)}
+.tgs{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;margin-top:12px}
+.conv label.tg{display:flex;align-items:center;justify-content:space-between;gap:14px;background:#fff;border:2px solid var(--line);border-radius:16px;padding:14px}
+.tg>span{flex:1}.tg b{display:block;color:var(--ink);font-size:14px}
+.conv .tg input{appearance:none;-webkit-appearance:none;flex:none;width:48px;height:28px;border-radius:99px;background:#c9d6e4;position:relative;cursor:pointer;border:0;margin:0}
+.tg input::after{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#fff;transition:.15s}
+.tg input:checked{background:var(--green)}.tg input:checked::after{left:23px}
+.conv label.chk{display:flex;gap:12px;align-items:flex-start;margin-top:24px}
+.chk input{width:22px;height:22px;flex:none;margin:1px 0 0;accent-color:var(--green)}
+.total{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-top:26px;padding:16px 18px;background:var(--mint);border:1px solid #bfe6c6;border-radius:16px}
+.total span{font-weight:900;font-size:13px;color:var(--mut)}.total b{font-size:24px;color:var(--green);font-weight:900}.total small{display:block;color:var(--mut);font-weight:700;text-align:right}
+#am-msg,#ah-msg{margin-top:16px;min-height:1.6em;font-weight:800;font-size:14px}
+#am-msg.err,#ah-msg.err,.cod-st.err{color:#c62828}.cod-st{min-height:1.4em;margin:8px 0 0;font-size:13px;font-weight:700;color:var(--mut)}.cod-st.ok{color:var(--green)}
+.pay{display:none;margin-top:22px}.pay.on{display:block}
+.ok-badge{display:inline-block;font-weight:900;font-size:12px;background:var(--green);color:#fff;border-radius:999px;padding:5px 12px;margin-bottom:12px}
+#ah-plans{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:16px}
+#ah-plans .card.on{border:2px solid var(--blue)}
+#ah-plans .px{display:block;font-weight:900;font-size:26px;color:var(--blue);margin:0 0 8px}
+#ah-plans ul{list-style:none;padding:0;margin:0 0 14px;display:grid;gap:6px;font-weight:700;font-size:14px}
+#ah-plans h3{text-transform:none;font-size:19px;color:var(--ink);letter-spacing:0}
+#ah-plans .sel{font-weight:900;color:var(--green);font-size:13px}
+@media (max-width:560px){.addr .f,.addr .f-rua,.addr .f-num{grid-column:1/-1}}
+</style>
+</head>
+<body>
+<nav><div class="wrap">
+<a class="logo" href="index.html">Aurora</a>
+<button class="tab" data-tab="aurohost" aria-selected="true">Aurohost</button>
+<button class="tab" data-tab="auromaps" aria-selected="false">Auromaps</button>
+</div></nav>
+
+<main><div class="wrap">
+
+<div id="t-aurohost">
+<div class="hero">
+<h1>Aurohost</h1>
+<p class="lead">Seu servidor de Minecraft Bedrock, pronto para jogar.</p>
+<p>Você escolhe como quer o mundo. A gente entrega o servidor com mapa e configurações feitas, sem você precisar entender de códigos ou plugins.</p>
+<div class="row"><a class="btn main" href="#ah-pedido">Montar meu servidor</a><a class="btn alt" href="#ah-como">Como funciona</a></div>
+</div>
+
+<section id="ah-planos">
+<h2>Planos</h2>
+<div class="aviso">Os valores são mensais. O plano já define jogadores, RAM e CPU.</div>
+<div id="ah-plans"></div>
+</section>
+
+<section id="ah-como">
+<h2>Como funciona</h2>
+<div class="steps">
+<div class="card"><h3>Monte seu servidor</h3><p>Escolha o plano e personalize nome, modo de jogo, dificuldade e opções do mundo. O valor aparece na hora.</p></div>
+<div class="card"><h3>Preencha seus dados</h3><p>Informe nome, e-mail e telefone. Usamos esses dados para entrar em contato com você.</p></div>
+<div class="card"><h3>Confirme e pague</h3><p>Confira o resumo do pedido e faça o pagamento.</p></div>
+<div class="card"><h3>Envie mapa e addons</h3><p>Se escolheu mapa próprio ou addons, o suporte entra em contato após a confirmação para receber os arquivos.</p></div>
+<div class="card"><h3>Entre e jogue</h3><p>O servidor chega configurado, com o mapa e as opções que você escolheu.</p></div>
+</div>
+</section>
+
+<section id="ah-pedido" style="padding-top:0"><div class="wrap">
+<h2>Fazer pedido</h2>
+<div class="aviso"><b>Antes de pedir</b><br>• O servidor é <b>só Minecraft Bedrock</b>.<br>• <b>Mapa próprio</b> e <b>addons</b> são coletados pelo suporte: depois que você confirmar o pedido, entramos em contato.<br>• O plano que você escolheu em Planos aparece no total do pedido.</div>
+<form class="conv" id="ah-form" novalidate></form>
+<div class="card pay" id="ah-pay">
+<span class="ok-badge">PEDIDO CONFIRMADO</span>
+<h3>Resumo do pedido</h3>
+<p id="ah-sum"></p>
+<div id="ah-payLink" hidden style="margin:6px 0 14px"><a class="btn alt" id="ah-payBtn" href="#" target="_blank" rel="noopener">IR PARA O PAGAMENTO</a></div>
+<p id="ah-payInfo" hidden>Entraremos em contato pelo e-mail informado com as instruções de pagamento.</p>
+<p class="imp" id="ah-imp" style="margin-top:14px"></p>
+</div>
+</div></section>
+
+
+<section>
+<h2>Nossa experiência</h2>
+<div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(280px,1fr))">
+<div class="card"><h3>Quem faz a Aurohost</h3><p>A equipe tem ampla experiência em desenvolvimento, configuração e manutenção de servidores de Minecraft.</p></div>
+<div class="card"><h3>O servidor Aurora</h3><p>Administramos o Aurora, em atividade há mais de três anos. Nele acumulamos experiência em configuração, manutenção técnica, addons e testes.</p><p><a href="index.html">Conheça a história do Aurora</a></p></div>
+<div class="card"><h3>Mais de seis anos de estrada</h3><p>Um membro da equipe tem mais de seis anos com servidores de Minecraft, em diversos projetos, com muitos testes e ajustes ao longo do caminho.</p></div>
+</div>
+</section>
+
+<section>
+<h2>Perguntas frequentes</h2>
+<details><summary>Quanto custa?</summary><div class="a" id="ah-faqprice"></div></details>
+<details><summary>Como o plano é escolhido?</summary><div class="a">Você escolhe em Planos, e ele já define os recursos. O Básico é o menor: 4 jogadores, 3 GB de RAM e CPU Padrão. O Pro tem jogadores e RAM ilimitados, o Avançado soma CPU Avançada e o Premium tem CPU Extrema.</div></details>
+<details><summary>Qual a diferença entre as CPUs?</summary><div class="a">A Padrão atende bem grupos de amigos. A Avançada dá mais desempenho para mais jogadores e addons. A Extrema é a mais potente.</div></details>
+<details><summary>Como envio meu mapa?</summary><div class="a">Escolha "Usar meu mapa" no pedido. Depois de confirmar, o suporte entra em contato para coletar o arquivo do mundo.</div></details>
+<details><summary>Como peço addons?</summary><div class="a">Escolha "Com addons" no pedido. Depois de confirmar, o suporte entra em contato para coletar os addons que você quer.</div></details>
+<details><summary>Posso mudar de plano depois?</summary><div class="a">Sim. Comece com poucos jogadores e mude de plano quando o servidor encher.</div></details>
+<details><summary>O que é a whitelist?</summary><div class="a">É a lista de jogadores autorizados. Com ela ativada, só entra quem você liberar.</div></details>
+<details><summary>O que são cheats?</summary><div class="a">São comandos como /gamemode e /time. Com cheats ativados, quem tem permissão pode usá-los.</div></details>
+</section>
+
+<section><div class="card cta"><h3>Pronto para jogar?</h3><p>Escolha seu plano e monte seu servidor agora. Nossa equipe cuida do resto.</p><div class="row"><a class="btn main" href="#ah-pedido">Montar meu servidor</a></div></div></section>
+
+<section>
+<h2>Créditos e termos de uso</h2>
+<div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(280px,1fr))">
+<div class="card"><h3>Minecraft</h3><p>Minecraft é uma marca da Mojang Studios e da Microsoft. A Aurohost não é afiliada a elas.</p></div>
+<div class="card"><h3>Blazehosting</h3><p>Não somos associados nem temos parceria com a empresa Blazehosting.</p></div>
+</div>
+</section>
+<p class="foot">Aurohost · servidores de Minecraft Bedrock prontos para jogar · Não afiliado à Mojang ou à Microsoft.</p>
+</div>
+
+<div id="t-auromaps" hidden>
+<div class="hero">
+<h1>Auromaps</h1>
+<p class="lead">Gere qualquer lugar da Terra em um mundo de Minecraft jogável, Java ou Bedrock.</p>
+<p>Por menos de 10 reais, gere seu bairro, sua casa e pontos turísticos de qualquer lugar do mundo.</p>
+<div class="row"><a class="btn main" href="#am-pedido">Gerar meu mapa</a><a class="btn alt" href="#am-como">Como funciona</a></div>
+</div>
+
+<section id="am-precos">
+<h2>Preços</h2>
+<div class="aviso">Todo o valor arrecadado vai para manutenção e hospedagem do servidor, despesas operacionais e projetos futuros, entre outras finalidades que a equipe do AuroraMC julgar pertinentes.</div>
+<div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(260px,1fr))">
+<div class="card"><h3>Região Padrão</h3><div class="num">R$ 4,99</div><div class="sz"><span>0,20 km² · Conjunto de quadras</span><span>3 km² · Bairro</span></div></div>
+<div class="card"><h3>Região Plus</h3><div class="num">R$ 6,70</div><div class="sz"><span>20 km² · Cidade pequena</span></div></div>
+<div class="card"><h3>Região Premium</h3><div class="num">R$ 9,99</div><div class="sz"><span>50 km² · Cidade pequena ou média</span><span>100 km² · Cidade média</span></div></div>
+</div>
+<p class="mut" style="color:var(--mut);font-size:13px;margin-top:12px">O resultado real depende dos dados do OpenStreetMap do local.</p>
+</section>
+
+<section id="am-como">
+<h2>Como funciona</h2>
+<div class="steps">
+<div class="card"><h3>Informe endereço e tamanho</h3><p>O endereço fica no meio de um quadrado e é onde você nasce (spawn). Escolha o tamanho e veja o preço na hora.</p></div>
+<div class="card"><h3>Preencha seus dados</h3><p>Nome, data de nascimento e e-mail. É nesse e-mail que você recebe o mapa.</p></div>
+<div class="card"><h3>Faça o pagamento</h3><p>Só começamos a gerar o mapa <b>depois que o pagamento for confirmado</b>.</p></div>
+<div class="card"><h3>Receba por e-mail</h3><p>Enviamos o mapa em até <b>3 dias</b> após a confirmação do pagamento.</p></div>
+</div>
+</section>
+
+<section id="am-pedido" style="padding-top:0"><div class="wrap">
+<h2>Fazer pedido</h2>
+
+<div class="aviso"><b>Antes de pedir</b><br>• O mapa <b>só começa a ser gerado após o pagamento</b>.<br>• O prazo de entrega é de <b>até 3 dias</b> depois da confirmação do pagamento, enviado para o seu e-mail.<br>• O endereço que você informar fica no <b>centro</b> da área e será o seu <b>spawn</b>..</div>
+
+<div class="conv" style="max-width:none">
+<form id="form" novalidate>
+<div id="step1">
+
+<label style="margin-top:0">1. ENDEREÇO COMPLETO<small>Todos os campos são obrigatórios. O endereço será o centro do mapa e também o seu spawn.</small></label>
+<div class="addr" id="addr">
+<div class="f f-rua"><label for="end-rua">RUA</label><input id="end-rua" name="rua" type="text" maxlength="120" autocomplete="address-line1" placeholder="Av. Paulista" required></div>
+<div class="f f-num"><label for="end-num">NÚMERO</label><input id="end-num" name="numero" type="text" maxlength="12" autocomplete="off" placeholder="1578" required></div>
+<div class="f f-bai"><label for="end-bai">BAIRRO</label><input id="end-bai" name="bairro" type="text" maxlength="80" autocomplete="address-level3" placeholder="Bela Vista" required></div>
+<div class="f f-cid"><label for="end-cid">CIDADE</label><input id="end-cid" name="cidade" type="text" maxlength="80" autocomplete="address-level2" placeholder="São Paulo" required></div>
+<div class="f f-est"><label for="end-est">ESTADO</label><input id="end-est" name="estado" type="text" maxlength="40" autocomplete="address-level1" placeholder="SP" required></div>
+<div class="f f-pai"><label for="end-pai">PAÍS</label><input id="end-pai" name="pais" type="text" maxlength="60" autocomplete="country-name" value="Brasil" required></div>
+</div>
+<p class="coord-help">Quanto mais completo, melhor. Ex.: Av. Paulista, 1578, Bela Vista, São Paulo, SP, Brasil</p>
+
+<label>2. TAMANHO DA ÁREA<small>Um quadrado ao redor do endereço, que fica exatamente no centro.</small></label>
+<div class="opts">
+<label class="opt"><input type="radio" name="regiao" value="quadras" checked><span class="box"><b>0,20 km² · R$ 4,99</b>Região Padrão · Conjunto de quadras</span></label>
+<label class="opt"><input type="radio" name="regiao" value="bairro"><span class="box"><b>3 km² · R$ 4,99</b>Região Padrão · Bairro</span></label>
+<label class="opt"><input type="radio" name="regiao" value="cidpeq"><span class="box"><b>20 km² · R$ 6,70</b>Região Plus · Cidade pequena</span></label>
+<label class="opt"><input type="radio" name="regiao" value="cidpeqmed"><span class="box"><b>50 km² · R$ 9,99</b>Região Premium · Cidade pequena ou média</span></label>
+<label class="opt"><input type="radio" name="regiao" value="cidmed"><span class="box"><b>100 km² · R$ 9,99</b>Região Premium · Cidade média</span></label>
+</div>
+
+<label style="margin-top:34px">3. OPÇÕES DO MUNDO</label>
+
+<label>VERSÃO DO MINECRAFT</label>
+<div class="opts">
+<label class="opt"><input type="radio" name="versao" value="Java" checked><span class="box"><b>Java</b>Java Edition, para PC.</span></label>
+<label class="opt"><input type="radio" name="versao" value="Bedrock"><span class="box"><b>Bedrock</b>Bedrock Edition, para celular, console e Windows.</span></label>
+</div>
+
+<label>MODO DE JOGO<small>Como o mundo funciona quando você entra pela primeira vez.</small></label>
+<div class="opts">
+<label class="opt"><input type="radio" name="modo" value="Sobrevivência"><span class="box"><b>Sobrevivência</b>Colete, construa e sobreviva com vida e fome.</span></label>
+<label class="opt"><input type="radio" name="modo" value="Criativo" checked><span class="box"><b>Criativo</b>Blocos ilimitados e voo livre.</span></label>
+<label class="opt"><input type="radio" name="modo" value="Espectador"><span class="box"><b>Espectador</b>Voe através de tudo sem tocar em nada.</span></label>
+</div>
+
+<label>MODO DE GERAÇÃO<small>Escolha o que é construído a partir dos dados reais do mapa.</small></label>
+<div class="opts">
+<label class="opt"><input type="radio" name="geracao" value="Objetos + terreno" checked><span class="box"><b>Objetos + terreno</b>Edifícios, estradas e natureza sobre o relevo real.</span></label>
+<label class="opt"><input type="radio" name="geracao" value="Somente objetos"><span class="box"><b>Somente objetos</b>Edifícios, estradas e natureza sobre terreno plano.</span></label>
+<label class="opt"><input type="radio" name="geracao" value="Somente terreno"><span class="box"><b>Somente terreno</b>Relevo real e cobertura do solo, sem edifícios nem estradas.</span></label>
+</div>
+
+<div class="tgs">
+<label class="tg"><span><b>Preencher solo</b>Pedra e minérios sob a superfície para mineração no modo sobrevivência.</span><input type="checkbox" id="solo" checked></label>
+<label class="tg"><span><b>Cavernas</b>Cavernas, rios subterrâneos e biomas de caverna sob as colinas.</span><input type="checkbox" id="cav" checked></label>
+</div>
+
+<label for="nome">4. SEU NOME</label>
+<input id="nome" name="nome" type="text" autocomplete="name" maxlength="80" placeholder="Como devemos te chamar?" required>
+
+<label for="nasc">DATA DE NASCIMENTO</label>
+<input id="nasc" name="nascimento" type="date" min="1900-01-01" required>
+
+<label for="email">SEU E-MAIL<small>É para esse e-mail que o mapa será enviado.</small></label>
+<input id="email" name="email" type="email" autocomplete="email" maxlength="120" placeholder="voce@exemplo.com" required>
+<label for="am-tel">SEU TELEFONE<small>Com DDD. Usamos para entrar em contato.</small></label>
+<input id="am-tel" name="telefone" type="tel" autocomplete="tel" maxlength="20" placeholder="(47) 99999-9999" required>
+
+<label for="am-cod">CÓDIGO DE PARCEIRO<small>Opcional. Se você tem um código de parceiro, digite aqui (letras maiúsculas e números).</small></label>
+<input id="am-cod" type="text" maxlength="20" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="Ex.: PARCEIRO10">
+<p class="cod-st" id="am-cod-st" role="status"></p>
+
+<label class="chk"><input type="checkbox" id="aceite" required><span>Entendi que o mapa <b>só começa a ser gerado após o pagamento</b> e que a entrega leva <b>até 3 dias</b>.</span></label>
+
+<div class="total"><span>TOTAL</span><b id="total">—</b></div>
+
+<div class="row" style="justify-content:flex-start"><button type="submit" class="btn" id="am-go">CONFIRMAR PEDIDO</button></div>
+<div id="am-msg" role="status"></div>
+</div>
+</form>
+
+<div class="card pay" id="pay">
+<span class="ok-badge">PEDIDO CONFIRMADO</span>
+<h3>Resumo do pedido</h3>
+<p id="resumo"></p>
+<div id="payLink" hidden><a class="btn alt" id="payBtn" href="#" target="_blank" rel="noopener">IR PARA O PAGAMENTO</a></div>
+<p id="payInfo" hidden>Entraremos em contato pelo e-mail informado com as instruções de pagamento.</p>
+<p style="margin-top:14px"><b>Importante:</b> só começamos a gerar seu mapa depois que o pagamento for confirmado. Você recebe o mapa no e-mail informado em até <b>3 dias</b> após a confirmação.</p>
+</div>
+
+</div>
+</div></section>
+
+
+<section>
+<h2>Perguntas frequentes</h2>
+<details><summary>Quanto custa?</summary><div class="a">Região Padrão, R$ 4,99: 0,20 km² ou 3 km². Região Plus, R$ 6,70: 20 km². Região Premium, R$ 9,99: 50 km² ou 100 km².</div></details>
+<details><summary>Quando meu mapa começa a ser feito?</summary><div class="a">Somente depois que o pagamento for confirmado. Sem pagamento, o mapa não é gerado.</div></details>
+<details><summary>Quanto tempo demora?</summary><div class="a">O envio é feito em até 3 dias depois da confirmação do pagamento, para o e-mail do pedido.</div></details>
+<details><summary>O que é o spawn?</summary><div class="a">É o ponto onde você nasce no mapa. Aqui ele é o endereço que você informar, que também fica no centro da área.</div></details>
+<details><summary>De onde vêm os dados do mapa?</summary><div class="a">O Arnis usa o <a href="https://www.openstreetmap.org/" target="_blank" rel="noopener">OpenStreetMap</a> para edifícios, estradas e uso do solo, via API Overpass. Elevação e terreno vêm do <a href="https://registry.opendata.aws/terrain-tiles/" target="_blank" rel="noopener">AWS Terrain Tiles</a>.</div></details>
+<details><summary>Por que o mapa pode ter menos detalhes em alguns lugares?</summary><div class="a">Os dados do OSM são feitos pela comunidade, então a cobertura varia. Cidades bem mapeadas geram mundos mais detalhados; regiões rurais podem ter dados incompletos.</div></details>
+<details><summary>O mapa vai ficar idêntico ao lugar real?</summary><div class="a">Não exatamente. A geração é automática a partir de dados públicos: lugares bem mapeados ficam excelentes e os com menos dados geram construções mais genéricas. O software ainda está em desenvolvimento.</div></details>
+<details><summary>Por que pedem nome, data de nascimento e e-mail?</summary><div class="a">O nome identifica o pedido, o e-mail é o destino da entrega e a data de nascimento nos ajuda a atender cada pessoa. Usamos os dados apenas para este pedido.</div></details>
+</section>
+
+<section><div class="card cta"><h3>Qual lugar você quer jogar?</h3><p>Digite o endereço, escolha o tamanho e receba o mapa por e-mail.</p><div class="row"><a class="btn main" href="#am-pedido">Gerar meu mapa</a></div></div></section>
+
+<section>
+<h2>Créditos e termos de uso</h2>
+<div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(280px,1fr))">
+<div class="card"><h3>Fonte de dados geográficos</h3><p>Dados do OpenStreetMap (© colaboradores do OpenStreetMap), sob a Licença de Banco de Dados Aberto (ODbL), em <a href="https://www.openstreetmap.org/" target="_blank" rel="noopener">openstreetmap.org</a>.</p></div>
+<div class="card"><h3>Ferramenta de geração</h3><p>A base do mapa é gerada pelo software de código aberto <a href="https://github.com/louis-e/arnis" target="_blank" rel="noopener">Arnis</a>, sob a Licença Apache 2.0.</p></div>
+</div>
+</section>
+<p class="foot">Auromaps · Dados © colaboradores do <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> (ODbL) · Gerado com Arnis (Apache 2.0) · Não afiliado à Mojang ou à Microsoft.</p>
+</div>
+
+</div></main>
+
+<script type="module">
+/* ===== FIREBASE (Firestore) — substitui a planilha do Google ===== */
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+import { getFirestore, doc, getDoc, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+
+/* >>> COLE AQUI o seu firebaseConfig (Console Firebase > Configurações do projeto > Seus apps > Web) <<< */
+const firebaseConfig = {
+  apiKey: "AIzaSyBJVAXTq8G_VnryA6ASIb3c9iVM-vyK9YY",
+  authDomain: "painel-aurora-45612.firebaseapp.com",
+  projectId: "painel-aurora-45612",
+  storageBucket: "painel-aurora-45612.firebasestorage.app",
+  messagingSenderId: "351293124365",
+  appId: "1:351293124365:web:511a4033fd1e15f5f44a44"
+};
+
+const db = getFirestore(initializeApp(firebaseConfig));
+const norm = v => String(v || "").toUpperCase().replace(/[^A-Z0-9]/g, "");
+
+async function parceiro(c) {
+  c = norm(c); if (!c) return null;
+  const s = await getDoc(doc(db, "parceiros", c));
+  return s.exists() ? s.data() : null;
+}
+function sufixo() {
+  const abc = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789", r = new Uint32Array(4);
+  crypto.getRandomValues(r);
+  return Array.from(r, n => abc[n % abc.length]).join("");
+}
+window.FB = {
+  verificarCodigo: async c => !!(await parceiro(c)),
+  // colecao: "auromaps" | "aurohost"; prefixo: "AM" | "AH"; valor: preço numérico do plano
+  async salvarPedido(colecao, prefixo, dados, valor) {
+    const cod = norm(dados.codigo);
+    let comissao = 0;
+    if (cod) {
+      const pa = await parceiro(cod);
+      if (!pa) return { ok: false, erro: "codigo_invalido" };
+      comissao = Math.round(valor * (Number(pa.porcentagem) || 0)) / 100;
+    }
+    const pedido = "#" + prefixo + "-" + sufixo();
+    await addDoc(collection(db, colecao), {
+      ...dados, codigo: cod, valor, comissao, pedido,
+      data: new Date().toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" }),
+      status: "Pendente", criadoEm: serverTimestamp()
+    });
+    return { ok: true, pedido };
+  }
+};
+</script>
+<script>
+/* ---- Código de parceiro: opcional, em MAIÚSCULAS (letras e números), conferido no Apps Script (lista PARCEIROS no Codigo.gs) ---- */
+function normCodigo(v){return String(v||"").toUpperCase().replace(/[^A-Z0-9]/g,"")}
+/* ===== CÓDIGOS DE PARCEIRO =====
+   A lista fica só no Codigo.gs (variável PARCEIROS). Para adicionar ou remover um código, edite lá e publique uma nova versão.
+   O site pergunta ao Apps Script (?acao=codigo&c=...) se o código existe. */
+async function verificarCodigo(c){
+  c=normCodigo(c); if(!c) return false;
+  return await window.FB.verificarCodigo(c);
+}
+function ligarCodigo(inp,st){
+  var t=null,seq=0,cod="";
+  function msg(txt,cls){st.textContent=txt;st.className="cod-st"+(cls?" "+cls:"")}
+  async function check(){
+    var c=cod,n=++seq;
+    if(!c){msg("");return null}
+    msg("Verificando…");
+    try{
+      var ok=await verificarCodigo(c);
+      if(n!==seq) return null;
+      msg(ok?"Código válido ✓":"Esse código não existe.",ok?"ok":"err");
+      return ok;
+    }catch(e){
+      if(n!==seq) return null;
+      msg("Não foi possível verificar o código agora. Tente de novo ou apague o código.","err");
+      return null;
+    }
+  }
+  inp.addEventListener("input",function(){
+    var v=normCodigo(inp.value); if(v!==inp.value) inp.value=v;
+    cod=v; clearTimeout(t); seq++;
+    if(!v){msg("");return}
+    msg("Verificando…"); t=setTimeout(check,500);
+  });
+  return {
+    valor:function(){return cod},
+    conferir:async function(){ if(!cod) return true; clearTimeout(t); return (await check())===true; }
+  };
+}
+
+</script>
+<script>
+(function(){
+/* ============ CONFIGURAÇÃO — edite aqui ============ */
+const CONFIG = {
+  // Tamanhos disponíveis. Cada preço tem seu link de pagamento (troque pelos seus).
+  LINK_4_99: "https://pag.ae/82euamaB2",
+  LINK_6_70: "https://pag.ae/82euaJgX2",
+  LINK_9_99: "https://pag.ae/82eubdrun"
+};
+/* =================================================== */
+
+const $ = id => document.getElementById(id);
+const val = n => document.querySelector(`input[name="${n}"]:checked`).value;
+const brl = v => "R$ " + v.toFixed(2).replace(".", ",");
+function msg(t,c){const m=$("am-msg");m.textContent=t;m.className=c||""}
+const esc = s => String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+
+/* ---------- coordenada e tamanho ---------- */
+const R = 6371.0088, rad = Math.PI/180;
+const TAMANHOS = {
+  quadras:   {nome:"Região Padrão · Conjunto de quadras", area:"0,20 km²", preco:4.99, link:CONFIG.LINK_4_99},
+  bairro:    {nome:"Região Padrão · Bairro", area:"3 km²",    preco:4.99, link:CONFIG.LINK_4_99},
+  cidpeq:    {nome:"Região Plus · Cidade pequena", area:"20 km²",   preco:6.70, link:CONFIG.LINK_6_70},
+  cidpeqmed: {nome:"Região Premium · Cidade pequena ou média", area:"50 km²",   preco:9.99, link:CONFIG.LINK_9_99},
+  cidmed:    {nome:"Região Premium · Cidade média", area:"100 km²",  preco:9.99, link:CONFIG.LINK_9_99}
+};
+function plano(){
+  const t = TAMANHOS[val("regiao")] || TAMANHOS.quadras;
+  return {nome: t.area + " · " + t.nome, preco:t.preco, link:t.link};
+}
+function atualizar(){ $("total").textContent = brl(plano().preco); }
+document.querySelectorAll('input[name="regiao"]').forEach(r => r.addEventListener("change", atualizar));
+atualizar();
+
+
+/* ---------- pedido ---------- */
+$("nasc").max = new Date().toISOString().slice(0,10);
+const COD = ligarCodigo($("am-cod"), $("am-cod-st"));
+$("addr").addEventListener("input", e => e.target.classList.remove("inv"));
+let current = null;
+$("form").addEventListener("submit", async e => {
+  e.preventDefault();
+  const campos = [["end-rua","rua"],["end-num","número"],["end-bai","bairro"],["end-cid","cidade"],["end-est","estado"],["end-pai","país"]];
+  const v = {}, faltam = [];
+  campos.forEach(([id,nome]) => {
+    const el = $(id); v[id] = el.value.trim().replace(/\s+/g," ");
+    const vazio = !v[id]; el.classList.toggle("inv", vazio); if (vazio) faltam.push(nome);
+  });
+  if (faltam.length) { document.querySelector("#addr .inv").focus(); return msg("Preencha o endereço completo. Falta: " + faltam.join(", ") + ".","err"); }
+  const nu = v["end-num"];
+  if (!/\d/.test(nu) && !/^s\/?n$/i.test(nu)) { $("end-num").classList.add("inv"); $("end-num").focus(); return msg("Informe o número do endereço (ou S/N, se o local não tiver número).","err"); }
+  const endereco = [v["end-rua"], nu, v["end-bai"], v["end-cid"], v["end-est"], v["end-pai"]].join(", ");
+  const d = {
+    nome: $("nome").value.trim(), nascimento: $("nasc").value, email: $("email").value.trim(),
+    endereco, versao: val("versao"), modo: val("modo"), geracao: val("geracao"),
+    solo: $("solo").checked ? "Sim" : "Não", cavernas: $("cav").checked ? "Sim" : "Não"
+  };
+  if (!d.nome || !d.nascimento || !d.email) return msg("Preencha todos os campos obrigatórios.","err");
+  if (!/^\S+@\S+\.\S+$/.test(d.email)) return msg("Esse e-mail parece inválido.","err");
+  const tel = $("am-tel").value.replace(/[^\d()\s-]/g,"").trim();
+  if (tel.replace(/\D/g,"").length < 10) { $("am-tel").classList.add("inv"); $("am-tel").focus(); return msg("Informe um telefone com DDD.","err"); }
+  const nasc = new Date(d.nascimento + "T00:00:00"), hoje = new Date();
+  let idade = hoje.getFullYear() - nasc.getFullYear();
+  if (hoje < new Date(hoje.getFullYear(), nasc.getMonth(), nasc.getDate())) idade--;
+  if (isNaN(idade) || idade < 5 || idade > 120) return msg("Informe uma data de nascimento válida.","err");
+  if (!$("aceite").checked) return msg("Marque a caixa confirmando que entendeu o prazo e o pagamento.","err");
+
+  const p = plano();
+  const pedido = {
+    produto: "Auromaps", nome: d.nome, nascimento: d.nascimento.split("-").reverse().join("/"), idade, email: d.email,
+    endereco: d.endereco, rua: v["end-rua"], numero: nu, bairro: v["end-bai"], cidade: v["end-cid"], estado: v["end-est"], pais: v["end-pai"], versao: d.versao, modo: d.modo, geracao: d.geracao, solo: d.solo, cavernas: d.cavernas,
+    plano: p.nome, valor: brl(p.preco), telefone: tel
+  };
+  const btn = $("am-go"); btn.disabled = true; msg("Confirmando pedido…");
+  try {
+    if (!(await COD.conferir())) {
+      btn.disabled = false; $("am-cod").focus();
+      return msg(COD.valor() ? "Corrija ou apague o código de parceiro para continuar." : "Não foi possível confirmar o pedido.","err");
+    }
+    pedido.codigo = COD.valor();
+    // Grava no Firebase (coleção "auromaps") e recebe o código do pedido (#AM-XXXX)
+    const j = await window.FB.salvarPedido("auromaps", "AM", pedido, p.preco);
+    if (!j.ok) {
+      btn.disabled = false;
+      return msg(j.erro === "codigo_invalido" ? "Esse código de parceiro não existe." : "Não foi possível registrar o pedido. Tente de novo em instantes.","err");
+    }
+    pedido.pedido = j.pedido || "";
+    msg("");
+    showPay(pedido, p);
+  } catch (err) {
+    msg("Não foi possível registrar o pedido. Tente de novo em instantes.","err");
+    btn.disabled = false;
+  }
+});
+
+function showPay(d, p){
+  $("form").hidden = true;
+  $("resumo").innerHTML = `${d.pedido ? `Pedido: <b>${esc(d.pedido)}</b><br>` : ""}<b>${esc(d.nome)}</b> · ${esc(d.idade)} anos (nascimento ${esc(d.nascimento)})<br>Endereço: <b>${esc(d.endereco)}</b> · ${esc(d.versao)}<br>Modo de jogo: ${esc(d.modo)} · Geração: ${esc(d.geracao)}<br>Preencher solo: ${esc(d.solo)} · Cavernas: ${esc(d.cavernas)}<br>Plano: <b>${esc(d.plano)}</b><br>O endereço fica no centro da área e é o seu spawn.<br>E-mail de entrega: <b>${esc(d.email)}</b><br>Telefone: ${esc(d.telefone)}${d.codigo ? `<br>Código de parceiro: <b>${esc(d.codigo)}</b>` : ""}<br>Valor: <b>${esc(d.valor)}</b>`;
+  if (p.link) { $("payLink").hidden = false; $("payBtn").href = p.link; }
+  else { $("payInfo").hidden = false; }
+  $("pay").classList.add("on");
+  $("pay").scrollIntoView({behavior:"smooth",block:"start"});
+}
+})();
+</script>
+<script>
+(function(){
+// ===== Ajuste aqui =====
+// Em cada plano abaixo, cole o link de pagamento em  link:"..."  (se ficar vazio, o site avisa que a equipe entra em contato).
+var PLANOS = [
+ {nome:"Básico",link:"",preco:29.90,rec:[0,0,0],itens:["Até 4 jogadores","CPU Padrão","Até 3 GB RAM","SSD NVMe ilimitado","Subdomínio grátis","Proteção Anti-DDoS"]},
+ {nome:"Pro",link:"",preco:59.90,rec:[1,1,0],itens:["Jogadores ilimitados","CPU Padrão","RAM ilimitada","SSD NVMe ilimitado","Subdomínio grátis","Proteção Anti-DDoS"]},
+ {nome:"Avançado",link:"",preco:89.90,rec:[1,1,1],itens:["Jogadores ilimitados","CPU Avançada","RAM ilimitada","SSD NVMe ilimitado","Subdomínio grátis","Proteção Anti-DDoS"]},
+ {nome:"Premium",link:"",preco:134.90,rec:[1,1,2],itens:["Jogadores ilimitados","CPU Extrema","RAM ilimitada","SSD NVMe ilimitado","Subdomínio grátis","Proteção Anti-DDoS"]}
+];
+// =======================
+var G={
+ ver:{l:"VERSÃO DO MINECRAFT",o:[["Bedrock","Bedrock Edition, para celular, console e Windows. Sempre a versão mais recente."]],d:0},
+ modo:{l:"MODO DE JOGO",s:"Como o mundo funciona quando você entra pela primeira vez.",o:[["Sobrevivência","Colete, construa e sobreviva com vida e fome."],["Criativo","Blocos ilimitados e voo livre."],["Aventura","Ideal para mapas de aventura, com construção limitada."]],d:0},
+ dif:{l:"DIFICULDADE",o:[["Pacífico","Sem monstros hostis."],["Fácil","Monstros causam menos dano."],["Normal","A experiência padrão."],["Difícil","Monstros mais fortes e fome perigosa."]],d:2},
+ mapa:{l:"MAPA",s:"Crie um mundo novo ou traga o seu.",o:[["Criar um novo","Geramos um mundo novo para você."],["Usar meu mapa","O suporte entra em contato para coletar depois de confirmar."]],d:0},
+ addons:{l:"ADDONS",o:[["Sem addons","Mundo puro, sem extras."],["Com addons","O suporte entra em contato para coletar depois de confirmar."]],d:0},
+ ram:{l:"RAM",o:[["3 GB","Para grupos pequenos."],["Ilimitada","Cresce com o seu servidor."]],d:0},
+ jog:{l:"JOGADORES",o:[["4","Até 4 jogadores."],["Ilimitado","Sem limite de jogadores."]],d:0},
+ cpu:{l:"CPU",o:[["Padrão","Ótima para jogar com amigos."],["Avançada","Mais desempenho para muita gente e addons."],["Extrema","Desempenho máximo para servidores grandes."]],d:0}
+};
+var S={nome:"",seu:"",nasc:"",email:"",tel:"",seed:"",wl:true,ch:false,plano:0};
+for(var k in G)S[k]=G[k].d;
+var NOMES_PLANO=["Básico","Pro","Avançado","Premium"];
+var $=function(i){return document.getElementById("ah-"+i)};
+function esc(t){return String(t).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+function brl(n){return "R$ "+n.toFixed(2).replace(".",",")}
+function opt(k){return G[k].o[S[k]][0]}
+function grpPlano(){
+ var h='<span class="lb" id="ah-l_plano">PLANO<small>Escolha o plano. Os recursos abaixo se ajustam a ele.</small></span><div class="opts" role="radiogroup" aria-labelledby="ah-l_plano">';
+ PLANOS.forEach(function(p,i){h+='<label class="opt"><input type="radio" name="ah_plano" value="'+i+'"'+(i===0?' checked':'')+'><span class="box"><b>'+p.nome+'</b>'+brl(p.preco)+'/mês</span></label>'});
+ return h+'</div>';
+}
+function grp(k){
+ var g=G[k],h='<span class="lb" id="ah-l_'+k+'">'+g.l+(g.s?'<small>'+g.s+'</small>':'')+'</span><div class="opts" role="radiogroup" aria-labelledby="ah-l_'+k+'">';
+ g.o.forEach(function(o,i){h+='<label class="opt"><input type="radio" name="ah_'+k+'" value="'+i+'"'+(i===g.d?' checked':'')+'><span class="box"><b>'+o[0]+'</b>'+o[1]+'</span></label>'});
+ return h+'</div>';
+}
+var COD=null;
+function build(){
+ var h='<label for="ah-nome">1. NOME DO SERVIDOR<small>O nome que vai aparecer na lista de servidores.</small></label><input id="ah-nome" type="text" maxlength="40" placeholder="Ex.: Aurora SMP" autocomplete="off" required>';
+ h+='<span class="lb" style="margin-top:34px">2. OPÇÕES DO MUNDO</span>';
+ h+=grp("ver")+'<div style="height:10px"></div>'+grp("modo")+grp("dif")+grp("mapa");
+ h+='<label for="ah-seed">SEED<small>Deixe vazio para uma seed aleatória.</small></label><input id="ah-seed" type="text" maxlength="60" placeholder="Ex.: 123456789" autocomplete="off"><p class="hint" id="ah-seedh"></p>';
+ h+=grp("addons");
+ h+='<div class="tgs" style="margin-top:22px"><label class="tg"><span><b>WHITELIST</b>Só entra quem você autorizar.</span><input type="checkbox" id="ah-wl" checked></label><label class="tg"><span><b>CHEATS</b>Permite comandos como /gamemode.</span><input type="checkbox" id="ah-ch"></label></div>';
+  h+='<span class="lb" style="margin-top:34px">3. SEUS DADOS</span>';
+ h+='<label for="ah-seu">SEU NOME</label><input id="ah-seu" type="text" maxlength="80" placeholder="Seu nome" autocomplete="name" required>';
+ h+='<label for="ah-nasc">DATA DE NASCIMENTO</label><input id="ah-nasc" type="date" min="1900-01-01" required>';
+ h+='<label for="ah-email">SEU E-MAIL<small>É por esse e-mail que entramos em contato.</small></label><input id="ah-email" type="email" maxlength="120" placeholder="voce@exemplo.com" autocomplete="email" required>';
+ h+='<label for="ah-tel">SEU TELEFONE<small>Com DDD. Usamos para entrar em contato.</small></label><input id="ah-tel" type="tel" maxlength="20" placeholder="(47) 99999-9999" autocomplete="tel" required>';
+ h+='<label for="ah-cod">CÓDIGO DE PARCEIRO<small>Opcional. Se você tem um código de parceiro, digite aqui (letras maiúsculas e números).</small></label><input id="ah-cod" type="text" maxlength="20" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="Ex.: PARCEIRO10"><p class="cod-st" id="ah-cod-st" role="status"></p>';
+ h+='<label class="chk"><input type="checkbox" id="ah-aceite"><span>Entendi que, depois de confirmar o pedido, o suporte entra em contato para coletar meu <b>mapa próprio</b> e/ou <b>addons</b>.</span></label>';
+ h+='<p class="hint" style="margin-top:26px">O plano vem da seção <a href="#ah-precos">Planos</a>. Para trocar, escolha outro lá em cima.</p>';
+ h+='<div class="total" style="margin-top:12px"><span>TOTAL</span><div><b id="ah-tprice">—</b><small id="ah-tplan"></small></div></div>';
+ h+='<div class="row" style="justify-content:flex-start"><button type="submit" class="btn" id="ah-go">CONFIRMAR PEDIDO</button></div><div id="ah-msg" role="status"></div>';
+ $("form").innerHTML=h;
+ COD=ligarCodigo($("cod"),$("cod-st"));
+ $("form").addEventListener("input",function(e){
+  var t=e.target,tid=t.id.replace(/^ah-/,"");
+  if(t.type==="radio"){
+   S[t.name.slice(3)]=+t.value;
+   if(t.name==="ah_plano"){var r=PLANOS[S.plano].rec;S.jog=r[0];S.ram=r[1];S.cpu=r[2];}
+   else if(t.name==="ah_jog"||t.name==="ah_ram"||t.name==="ah_cpu"){S.plano=plano();}
+  }
+  else if(tid==="nome")S.nome=t.value;
+  else if(tid==="seu")S.seu=t.value;
+  else if(tid==="nasc")S.nasc=t.value;
+  else if(tid==="email")S.email=t.value;
+  else if(tid==="tel")S.tel=t.value;
+  else if(tid==="seed")S.seed=t.value;
+  else if(tid==="wl")S.wl=t.checked;
+  else if(tid==="ch")S.ch=t.checked;
+  t.classList.remove("inv");
+  render();
+ });
+ $("form").addEventListener("submit",enviar);
+}
+function plano(){
+ if(S.cpu===2)return 3;
+ if(S.cpu===1)return 2;
+ return (S.jog!==0||S.ram===1)?1:0;
+}
+function render(){
+ var i=S.plano,p=PLANOS[i],pr=S.mapa===1;
+ ["plano","jog","ram","cpu"].forEach(function(n){
+  var rs=document.getElementsByName("ah_"+n);
+  for(var x=0;x<rs.length;x++)rs[x].checked=(+rs[x].value===S[n]);
+ });
+ $("seed").disabled=pr;
+ $("seedh").textContent=pr?"A seed vale só para mapas novos.":"";
+ $("tprice").textContent=brl(p.preco)+"/mês";
+ $("tplan").textContent="Plano "+p.nome;
+ $("plans").innerHTML=PLANOS.map(function(q,j){
+  return '<div class="card'+(j===i?' on':'')+'">'+(q.tag?'<span class="tag">'+q.tag+'</span>':'')+'<b class="px">'+brl(q.preco)+'/mês</b><h3>Plano '+q.nome+'</h3><ul>'+q.itens.map(function(x){return '<li>'+x+'</li>'}).join('')+'</ul><div class="sel">'+(j===i?'PLANO DO SEU PEDIDO':'<a href="#ah-pedido" class="btn" data-p="'+j+'">ESCOLHER</a>')+'</div></div>';
+ }).join('');
+}
+$("plans").addEventListener("click",function(e){
+ var a=e.target.closest&&e.target.closest("[data-p]");
+ if(!a)return;
+ var j=+a.getAttribute("data-p"),r=PLANOS[j].rec;
+ S.plano=j;S.jog=r[0];S.ram=r[1];S.cpu=r[2];render();
+});
+function linhas(){
+ var pr=S.mapa===1,p=PLANOS[S.plano];
+ return [["Servidor",S.nome.trim()],["Versão","Minecraft Bedrock"],["Modo de jogo",opt("modo")],["Dificuldade",opt("dif")],["Mapa",opt("mapa")+(pr?" (coletado pelo suporte)":"")],["Seed",pr?"—":(S.seed.trim()||"Aleatória")],["Addons",opt("addons")+(S.addons?" (coletado pelo suporte)":"")],["Whitelist",S.wl?"Ativada":"Desativada"],["Cheats",S.ch?"Ativados":"Desativados"],["RAM",opt("ram")],["Jogadores",opt("jog")],["CPU",opt("cpu")],["Plano",p.nome+" — "+brl(p.preco)+"/mês"],["Cliente",S.seu.trim()],["E-mail",S.email],["Telefone",S.tel.trim()]];
+}
+function idadeDe(v){
+ var n=new Date(v+"T00:00:00"),h=new Date(),i=h.getFullYear()-n.getFullYear();
+ if(h<new Date(h.getFullYear(),n.getMonth(),n.getDate()))i--;
+ return isNaN(i)?NaN:i;
+}
+var ultimoEnvio="",ultimoPedido="";
+function limpa(v){v=String(v);return /^[=+\-@]/.test(v)?"'"+v:v}
+// Grava o pedido na coleção "aurohost" do Firebase; o código (#AH-XXXX) é gerado e devolvido.
+async function registrar(L){
+ var m={},p=PLANOS[S.plano];
+ L.forEach(function(r){m[r[0]]=String(r[1])});
+ var d={nome:m["Cliente"],nascimento:S.nasc.split("-").reverse().join("/"),email:m["E-mail"],
+  servidor:m["Servidor"],versao:m["Versão"],dificuldade:m["Dificuldade"],mapa:m["Mapa"],addons:m["Addons"],
+  whitelist:m["Whitelist"],cheats:m["Cheats"],ram:m["RAM"],cpu:m["CPU"],jogadores:m["Jogadores"],
+  plano:p.nome,modo:m["Modo de jogo"],seed:m["Seed"],
+  telefone:S.tel.replace(/[^\d()\s-]/g,"").trim(),codigo:COD?COD.valor():""};
+ var chave=JSON.stringify(d);
+ if(chave===ultimoEnvio&&ultimoPedido)return {pedido:ultimoPedido}; // mesmo pedido reenviado: não duplica
+ var j=await window.FB.salvarPedido("aurohost","AH",d,p.preco);
+ if(!j.ok){var e=new Error(j.erro==="codigo_invalido"?"Esse código de parceiro não existe.":"Não foi possível registrar o pedido. Tente de novo em instantes.");e.custom=true;throw e}
+ ultimoEnvio=chave;ultimoPedido=j.pedido||"";
+ return {pedido:ultimoPedido};
+}
+async function enviar(ev){
+ ev.preventDefault();
+ var m=$("msg"),bad=null;
+ if(!S.nome.trim())bad=["nome","Dê um nome ao seu servidor."];
+ else if(!S.seu.trim())bad=["seu","Informe o seu nome."];
+ else if(!S.nasc||!(idadeDe(S.nasc)>=5&&idadeDe(S.nasc)<=120))bad=["nasc","Informe uma data de nascimento válida."];
+ else if(!/^\S+@\S+\.\S+$/.test(S.email))bad=["email","Informe um e-mail válido."];
+ else if(S.tel.replace(/\D/g,"").length<10)bad=["tel","Informe um telefone com DDD."];
+ else if(!$("aceite").checked)bad=["aceite","Marque que entendeu como o suporte coletará mapa e addons."];
+ if(bad){m.textContent=bad[1];$(bad[0]).classList.add("inv");$(bad[0]).focus();return}
+ var go=$("go");go.disabled=true;m.textContent="Confirmando pedido…";
+ try{
+  if(!(await COD.conferir())){
+   m.textContent=COD.valor()?"Corrija ou apague o código de parceiro para continuar.":"Não foi possível confirmar o pedido.";
+   $("cod").focus();go.disabled=false;return;
+  }
+  var L=linhas(),r=await registrar(L),p=PLANOS[S.plano],cv=COD.valor();
+  m.textContent="";
+  $("sum").innerHTML=(r.pedido?'Pedido: <b>'+esc(r.pedido)+'</b><br>':'')
+   +'<b>'+esc(S.seu.trim())+'</b> · '+idadeDe(S.nasc)+' anos (nascimento '+esc(S.nasc.split("-").reverse().join("/"))+')<br>'
+   +'Servidor: <b>'+esc(S.nome.trim())+'</b> · Minecraft Bedrock<br>'
+   +'Modo de jogo: '+esc(opt("modo"))+' · Dificuldade: '+esc(opt("dif"))+'<br>'
+   +'Mapa: '+esc(opt("mapa"))+' · Seed: '+esc(S.mapa===1?"—":(S.seed.trim()||"Aleatória"))+'<br>'
+   +'Addons: '+esc(opt("addons"))+'<br>'
+   +'Whitelist: '+(S.wl?"Ativada":"Desativada")+' · Cheats: '+(S.ch?"Ativados":"Desativados")+'<br>'
+   +'RAM: '+esc(opt("ram"))+' · Jogadores: '+esc(opt("jog"))+' · CPU: '+esc(opt("cpu"))+'<br>'
+   +'Plano: <b>'+esc(p.nome)+'</b><br>'
+   +'E-mail de contato: <b>'+esc(S.email)+'</b> · Telefone: '+esc(S.tel.trim())
+   +(cv?'<br>Código de parceiro: <b>'+esc(cv)+'</b>':'')
+   +'<br>Valor: <b>'+esc(brl(p.preco))+'/mês</b>';
+  if(p.link){$("payLink").hidden=false;$("payBtn").href=p.link;$("payInfo").hidden=true}
+  else{$("payLink").hidden=true;$("payInfo").hidden=false}
+  var tx="só começamos a configurar o seu servidor depois que o pagamento for confirmado. O suporte entra em contato pelo e-mail ou telefone informado";
+  if(S.addons===1&&S.mapa===1)tx+=" para coletar os seus addons e o seu mapa.";
+  else if(S.addons===1)tx+=" para coletar os seus addons.";
+  else if(S.mapa===1)tx+=" para coletar o seu mapa.";
+  else tx+=" com os próximos passos.";
+  $("imp").innerHTML="<b>Importante:</b> "+tx;
+  $("pay").classList.add("on");
+  $("pay").scrollIntoView({behavior:"smooth",block:"start"});
+ }catch(err){
+  m.textContent=(err&&err.custom)?err.message:"Não foi possível registrar o pedido. Tente de novo em instantes.";
+ }
+ go.disabled=false;
+}
+$("faqprice").textContent="Os planos custam "+PLANOS.map(function(p){return p.nome+" "+brl(p.preco)}).join(", ")+" por mês. Você escolhe o plano na seção Planos.";
+build();render();
+})();
+</script>
+<script>
+/* Abas + navegação interna (#ah-pedido, #am-pedido, #auromaps ...) */
+(function(){
+function aba(n){document.querySelectorAll("[data-tab]").forEach(function(b){b.setAttribute("aria-selected",b.dataset.tab===n)});
+["aurohost","auromaps"].forEach(function(k){document.getElementById("t-"+k).hidden=k!==n})}
+function ir(h){
+ if(!h){return}
+ if(h==="aurohost"||h==="auromaps"){aba(h);window.scrollTo(0,0);return}
+ var e=document.getElementById(h);if(!e)return;
+ aba(h.indexOf("am-")===0?"auromaps":"aurohost");e.scrollIntoView()}
+document.querySelectorAll("[data-tab]").forEach(function(b){b.addEventListener("click",function(){aba(b.dataset.tab);window.scrollTo(0,0);try{history.replaceState(null,"","#"+b.dataset.tab)}catch(e){}})});
+document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest('a[href^="#"]');if(!a)return;var h=a.getAttribute("href").slice(1);if(!h)return;
+ e.preventDefault();try{history.replaceState(null,"","#"+h)}catch(_){}ir(h)});
+window.addEventListener("hashchange",function(){ir(location.hash.slice(1))});
+ir(location.hash.slice(1));
+})();
+</script>
+</body>
+</html>
